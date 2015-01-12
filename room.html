@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Client/Server Side Project</title>
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+    <link href="css/rooms.css" rel="stylesheet" type="text/css" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+		<script src="js/geo.js"></script>
+</head>
+<body onload="initialize()">
+    <!--<header>
+        <h2>Powerful Chat System - Lesson 9</h2>
+        <a href="http://www.script-tutorials.com/powerful-chat-system-lesson-9/" class="stuts">Back to original tutorial on <span>Script Tutorials</span></a>
+    </header>-->
+    <div class="clear"></div>
+    <div class="container" id="con1">
+        <div class="column">
+    <span style="float:right"><a href="login.html">Log Out</a></span>
+    <h3>Hello benathmane</h3>
+    <h3>Your status:</h3>
+    <div>active</div>
+    <h3>Your role:</h3>
+    <div>1</div>
+</div>
+
+        <div class="clear"></div>
+<hr />
+<h2>My avatar</h2>
+<div class="column">
+    <div class="profiles">
+        <div title="ayoub benathmane">
+            <a href="profil.html">
+                <img alt="ayoub benathmane" src="data/4.jpg" />
+                <p>ayoub benathmane</p>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="column">
+    <form id="wrapper" target="upload_result" method="POST" action="index.php" enctype="multipart/form-data">
+        <input id="avatar" type="file" name="avatar">
+        <input type="hidden" name="action" value="add_avatar">
+        <input id="submit" type="submit" value="Upload" name="submit">
+    </form>
+    <iframe name="upload_result" class="avatar_iframe">
+    </iframe>
+</div>
+    </div>
+		<div class="container" id="con3">
+			<center>
+				<!--<p id="msg">Click the button to get your coordinates:</p>-->
+				<p id="address"></p>
+				<button onclick="getLocation()">Where am I ?</button>
+      <div id="map_canvas" style="width: 500px; height: 300px"></div>
+			</center>
+    </div>
+    <div class="container" id="con2">
+        <div class="roomsHolder">
+    <ul class="rooms">
+        <li><a class="violet active" href="accueil.html">Main</a></li>
+        <li><a class="blue" href="room.html">Room1</a></li><li><a class="red" href="#">Room2</a></li><li><a class="indigo" href="#">Room3</a></li>
+    </ul>
+    <div class="shadow"></div>
+</div>
+<div class="clear"></div>
+        
+
+ <h2>Room1 Chat Block</h2>
+        <div class="chat_messages">
+            
+        </div>
+        <form class="chat_submit_form">
+    <div><input type="text" name="message" /><input type="submit" value="Submit" name="Submit" /></div>
+    <div>
+        <h3 class="error">Some error occurs during sending message</h3>
+        <h3 class="success">Message successfully sent</h3>
+        <h3 class="protect">Please wait 5 secs before adding next message</h3>
+    </div>
+    <input type="hidden" name="room" value="1" />
+</form>
+<script>
+    var iRoom = 0;
+</script>
+<script src="js/chat.js"></script>
+    </div>
+
+    <div class="sidebar">
+        <div>
+            <h2>Online Members Block</h2>
+            <div class="profiles online_profiles"><div id="4" title="ayoub benathmane"><a href="profil.html"><img src="data/4.jpg" alt="ayoub benathmane"><p>ayoub benathmane<img id="4" alt="chat" src="images/chat.png" class="pchat" title="ayoub benathmane" /></p><img alt="" src="images/online.png" class="status_img" /></a></div></div>
+        </div>
+        <div>
+            <h2>Last Members</h2>
+            <div class="profiles"><div id="5" title="hana alaya"><a href="profil2.html"><img src="images/member.png" alt="hana alaya"><p>hana alaya<img id="5" alt="chat" src="images/chat.png" class="pchat" title="hana alaya" /></p></a></div><div id="4" title="ayoub benathmane"><a href="profil.html"><img src="data/4.jpg" alt="ayoub benathmane"><p>ayoub benathmane<img id="4" alt="chat" src="images/chat.png" class="pchat" title="ayoub benathmane" /></p><img alt="" src="images/online.png" class="status_img" /></a></div><div id="1" title="test user first name test user last name"><a href="profile.php?id=1"><img src="images/member.png" alt="test user first name test user last name"><p>test user first name test us...<img id="1" alt="chat" src="images/chat.png" class="pchat" title="test user first name test user last name" /></p></a></div><div id="2" title="moderator first name moderator last name"><a href="profile.php?id=2"><img src="images/member.png" alt="moderator first name moderator last name"><p>moderator first name moderat...<img id="2" alt="chat" src="images/chat.png" class="pchat" title="moderator first name moderator last name" /></p></a></div><div id="3" title="admin first name admin last name"><a href="profile.php?id=3"><img src="images/member.png" alt="admin first name admin last name"><p>admin first name admin last name<img id="3" alt="chat" src="images/chat.png" class="pchat" title="admin first name admin last name" /></p></a></div></div>
+        </div>
+    </div>
+
+    <div class="priv_dock_wrap"></div>
+    <script src="js/priv_chat.js"></script>
+
+</body>
+</html>

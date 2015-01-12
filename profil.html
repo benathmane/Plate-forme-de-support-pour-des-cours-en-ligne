@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Client/Server Side Project</title>
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="js/customizer.js"></script>
+
+    <style>
+        .container {
+            
+        }
+    </style>
+</head>
+<body>
+    <!-- <header>
+        <h2>Powerful Chat System - Lesson 9</h2>
+        <a href="http://www.script-tutorials.com/powerful-chat-system-lesson-9/" class="stuts">Back to original tutorial on <span>Script Tutorials</span></a>
+    </header>-->
+    <div class="clear"></div>
+    <div class="container">
+        <div class="column">
+            <h3>Name: benathmane</h3>
+            <h3>First name: ayoub</h3>
+            <h3>Last name: benathmane</h3>
+            <h3>About: </h3>
+            <h3>Date Reg: 2015-01-10 10:31:43</h3>
+            <h3>Role: Ordinary member</h3>
+            <h3>Avatar: <img src="data/4.jpg" style="vertical-align:middle" /></h3>
+        </div>
+        <div class="column">
+            <p><a href="accueil.html">Back to chat</a>
+                
+            </p>
+            
+        </div>
+    </div>
+    
+    <div class="container" >
+        <h2>You can customize your profile page</h2>
+        <div class="column">
+            <canvas id="color_canvas" width="370" height="60"></canvas>
+        </div>
+        <div class="column">
+            <div class="customizer_buttons">
+                <div id="preview"></div>
+            </div>
+
+            <form action="profile.php" method="GET" target="change_color_result">
+                <input type="hidden" value="4" name="id">
+                <input type="hidden" value="color" name="color" id="color">
+                <input type="hidden" value="change_color" name="action">
+                <input id="submit" type="submit" name="submit" value="Apply">
+            </form>
+            <iframe class="avatar_iframe" name="change_color_result"></iframe>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div>
+            <h2>Online Members Block</h2>
+            <div class="profiles online_profiles"><div id="4" title="ayoub benathmane"><a href="profil.html"><img src="data/4.jpg" alt="ayoub benathmane"><p>ayoub benathmane<img id="4" alt="chat" src="images/chat.png" class="pchat" title="ayoub benathmane" /></p><img alt="" src="images/online.png" class="status_img" /></a></div></div>
+        </div>
+        <div>
+            <h2>Last Members</h2>
+            <div class="profiles"><div id="5" title="hana alaya"><a href="profil2.html"><img src="images/member.png" alt="hana alaya"><p>hana alaya<img id="5" alt="chat" src="images/chat.png" class="pchat" title="hana alaya" /></p></a></div><div id="4" title="ayoub benathmane"><a href="profil.html"><img src="data/4.jpg" alt="ayoub benathmane"><p>ayoub benathmane<img id="4" alt="chat" src="images/chat.png" class="pchat" title="ayoub benathmane" /></p><img alt="" src="images/online.png" class="status_img" /></a></div><div id="1" title="test user first name test user last name"><a href="profile.php?id=1"><img src="images/member.png" alt="test user first name test user last name"><p>test user first name test us...<img id="1" alt="chat" src="images/chat.png" class="pchat" title="test user first name test user last name" /></p></a></div><div id="2" title="moderator first name moderator last name"><a href="profile.php?id=2"><img src="images/member.png" alt="moderator first name moderator last name"><p>moderator first name moderat...<img id="2" alt="chat" src="images/chat.png" class="pchat" title="moderator first name moderator last name" /></p></a></div><div id="3" title="admin first name admin last name"><a href="profile.php?id=3"><img src="images/member.png" alt="admin first name admin last name"><p>admin first name admin last name<img id="3" alt="chat" src="images/chat.png" class="pchat" title="admin first name admin last name" /></p></a></div></div>
+        </div>
+    </div>
+
+    <div class="priv_dock_wrap"></div>
+    <script src="js/priv_chat.js"></script>
+
+</body>
+</html>
