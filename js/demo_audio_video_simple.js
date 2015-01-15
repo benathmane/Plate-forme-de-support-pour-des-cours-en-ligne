@@ -5,7 +5,7 @@ function connect() {
     easyrtc.setVideoDims(640,480);
     easyrtc.setRoomOccupantListener(convertListToButtons);
     easyrtc.easyApp("easyrtc.audioVideoSimple", "selfVideo", ["callerVideo"], loginSuccess, loginFailure);
-		alert(easyrtc.cleanId(easyrtcid));
+	alert(easyrtc.cleanId(easyrtcid));
  }
 
 

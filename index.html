@@ -5,111 +5,58 @@
     <link href="css/main.css" rel="stylesheet" type="text/css" />
     <link href="css/rooms.css" rel="stylesheet" type="text/css" />
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+		<script src="js/geo.js"></script>
+		<script src="js/socket.io.js"></script>
+		<script type="text/javascript" src="js/easyrtc.js"></script>
+		<script type="text/javascript" src="js/demo_audio_video_simple.js"></script>
+		<link href="css/easyCss.css" rel="stylesheet" type="text/css" />
+    
+        <link rel="import" id="imp1" href="colonne1.html">
+        <link rel="import" id="imp2" href="colonne2_1.html">
+        <link rel="import" id="imp22" href="colonne2_2.html">
+        <link rel="import" id="imp3" href="colonne3.html">
+
 </head>
-<body>
-    <!--<header>
-        <h2>Powerful Chat System - Lesson 9</h2>
-        <a href="http://www.script-tutorials.com/powerful-chat-system-lesson-9/" class="stuts">Back to original tutorial on <span>Script Tutorials</span></a>
-    </header>-->
-    <div class="clear"></div>
-    <div class="container" id="con1">
-        <div class="column">
-    <h3>Chat rooms</h3>
-    <p>Our chat will contain next features: registration, main chat and audio/video calls, profiles with avatars, ranking system, private messaging, custom rooms.</p>
-</div>
-<div class="column">
+<body onload=" initialize();connect();">
+   <!-- *************************************************************************************************************************** -->
+   
+<script>
+var doc = document.querySelector('#imp1').import;
+var text = doc.querySelector('.container');
+document.body.appendChild(text.cloneNode(true));
+</script> 
+   
+<!-- *************************************************************************************************************************** -->
+<!--  Colonne 2-->
+ 
+   <script>
+var doc = document.querySelector('#imp2').import;
+var text = doc.querySelector('.container');
+document.body.appendChild(text.cloneNode(true));
+</script> 
 
-    <div class="tabs_container">
-        <ul class="tabs">
-            <li class="active"><h3>Log In</h3></li>
-            <li><h3>Join</h3></li>
-        </ul>
-    </div>
-
-    <div class="nav_container">
-        <form class="login_form" action="accueil.html" method="post" id="1">
-            <label>Username:</label><input type="text" name="username">
-            <label>Password:</label><input type="password" name="password">
-            <input type="submit" name="Login" value="Login">
-        </form>
-        <form class="join_form" action="index.php" method="post" id="2" style="display: none;">
-
-            <label>Full name:</label>
-            <input type="text" id="username" name="username" placeholder="Your name" maxlength="128" title="Your name" required>
-
-            <label>First name:</label>
-            <input type="text" id="firstname" name="firstname" placeholder="Your first name" maxlength="128" title="Your first name">
-
-            <label>Last name:</label>
-            <input type="text" id="lastname" name="lastname" placeholder="Your last name" maxlength="128" title="Your last name">
-
-            <label>Email:</label>
-            <input type="text" id="email" name="email" placeholder="Your email" maxlength="128" title="Format: *@gmail.com" pattern=".*@gmail\.com" required>
-
-            <label>Password:</label>
-            <input type="text" id="password" name="password" maxlength="128" title="Password" required>
-
-            <label>Repeat Password:</label>
-            <input type="text" id="password" name="password" maxlength="128" title="Repeat password" required oninput="checkpass(this)">
-
-            <input type="submit" name="Join" value="Join">
-        </form>
-    </div>
-
-    <!--<div>Powered by <a href="http://www.script-tutorials.com/" target="_blank" title="Script Tutorials">Script Tutorials</a>-->
-    </div>
-</div>
 
 <script>
-$(document).ready(function(){
-    $('.tabs li h3').click(function () {
-      $('.tabs li').removeClass('active');
-      $(this).parent().addClass('active');
+var doc = document.querySelector('#imp22').import;
+var text = doc.querySelector('.container');
+document.body.appendChild(text.cloneNode(true));
+</script> 
+<!-- *************************************************************************************************************************** -->
 
-      $('.nav_container form').hide();
-      var index = $('.tabs li h3').index(this);
-      $('.nav_container form').eq(index).show();
-      return false;
-    });
-});
+<!--  Colonne 3-->
+   
+<script>
+var doc = document.querySelector('#imp3').import;
+var text = doc.querySelector('.sidebar');
+document.body.appendChild(text.cloneNode(true));
+</script>   
 
-function checkpass(input) {
-    if (input.value != document.getElementById('password').value) {
-        input.setCustomValidity('Password must match.');
-    } else {
-        input.setCustomValidity('');
-    }
-}
-</script>
-        
-    </div>
-		<!--<div class="container" id="con3">
-			<center><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11553.518739478626!2d7.08212675!3d43.61945585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12cc2b1b41c11d4d%3A0x225231c497224ba5!2sPolytech+Nice-Sophia!5e0!3m2!1sfr!2sfr!4v1420882978522" width="600" height="450" frameborder="0" style="border:0"></iframe></center>
-    </div>-->
-    <div class="container" id="con2">
-        
-        
 
-        <h2> Chat Block</h2>
-        <div class="chat_messages">
-            <h2>You do not have rights to use chat</h2>
-        </div>
-        
-    </div>
-
-    <div class="sidebar">
-        <div>
-            <h2>Online Members Block</h2>
-            <div class="profiles online_profiles"><div id="4" title="ayoub benathmane"><a href="profile.php?id=4"><img src="data/4.jpg" alt="ayoub benathmane"><p>ayoub benathmane</p><img alt="" src="images/online.png" class="status_img" /></a></div></div>
-        </div>
-        <div>
-            <h2>Last Members</h2>
-            <div class="profiles"><div id="5" title="hana alaya"><a href="profile.php?id=5"><img src="images/member.png" alt="hana alaya"><p>hana alaya</p></a></div><div id="4" title="ayoub benathmane"><a href="profile.php?id=4"><img src="data/4.jpg" alt="ayoub benathmane"><p>ayoub benathmane</p><img alt="" src="images/online.png" class="status_img" /></a></div><div id="1" title="test user first name test user last name"><a href="profile.php?id=1"><img src="images/member.png" alt="test user first name test user last name"><p>test user first name test us...</p></a></div><div id="2" title="moderator first name moderator last name"><a href="profile.php?id=2"><img src="images/member.png" alt="moderator first name moderator last name"><p>moderator first name moderat...</p></a></div><div id="3" title="admin first name admin last name"><a href="profile.php?id=3"><img src="images/member.png" alt="admin first name admin last name"><p>admin first name admin last name</p></a></div></div>
-        </div>
-    </div>
+<!-- *************************************************************************************************************************** -->
 
     <div class="priv_dock_wrap"></div>
-    
+    <script src="js/priv_chat.js"></script>
 
 </body>
 </html>

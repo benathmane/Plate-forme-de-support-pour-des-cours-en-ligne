@@ -1,0 +1,32 @@
+
+<!-- colonne 2  : part 2rooms & chats -->
+
+    <div class="container" id="con2">
+        <div class="roomsHolder">
+    <ul class="rooms">
+        <li><a class="violet active" href="accueil.html">Main</a></li>
+        <li><a class="blue" href="room.html">Room1</a></li><li><a class="red" href="#">Room2</a></li><li><a class="indigo" href="#">Room3</a></li>
+    </ul>
+    <div class="shadow"></div>
+</div>
+<div class="clear"></div>
+        
+
+        <h2>Main Chat Block</h2>
+        <div class="chat_messages">
+            <div class="message" id="message_1" ><b><a href="profil.html" target="_blank"><img src="data/4.jpg">benathmane:</a></b> Salam<span>(09:32:45)</span></div><div class="message" id="message_2" ><b><a href="profil2.html" target="_blank"><img src="images/member.png">hana:</a></b> Salam<span>(09:33:50)</span></div><div class="message" id="message_3" ><b><a href="profil.html" target="_blank"><img src="data/4.jpg">benathmane:</a></b> ca va?<span>(09:52:46)</span></div>
+        </div>
+        <form class="chat_submit_form">
+    <div><input type="text" name="message" /><input type="submit" value="Submit" name="Submit" /></div>
+    <div>
+        <h3 class="error">Some error occurs during sending message</h3>
+        <h3 class="success">Message successfully sent</h3>
+        <h3 class="protect">Please wait 5 secs before adding next message</h3>
+    </div>
+    <input type="hidden" name="room" value="0" />
+</form>
+<script>
+    var iRoom = 0;
+</script>
+<script src="js/chat.js"></script>
+    </div>
