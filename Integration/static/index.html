@@ -51,8 +51,10 @@
 							}
 							div#map
 							{
-										width:480px;
-										height:400px;
+										left:0px;
+										width:400px;
+										height:290px;
+										buttom:0px;
 							}
 							/* chat block */
 							.chat_messages .message {
@@ -104,7 +106,7 @@
 										position: fixed;
 										right: 0;
 										top: 0;
-										width: 150px;
+										width: 200px;
 										z-index: 101;
 										overflow: hidden;
 										display: block;
@@ -131,26 +133,11 @@
 						flex-direction: column;
 						flex-pack:center;
 				    }
-						.container {
-								background-color: #F2F4F8;
-								border: 1px solid rgba(0, 0, 0, 0.4);
-								box-shadow: 2px 0 2px -2px #B2B9C9 inset;
-								color: #333333;
-								margin: 20px;
-								overflow: hidden;
-								padding: 20px;
-								position: relative;
-								width: 400px;
-								float:left;
-						}
-						#con1.container {
-								width: 300px;
-						}
 						#con3.container {
 								margin-left: auto;
 								margin-right: auto;
-								width: 625px;
-								height:300px;
+								width: 800px;
+								height:600px;
 						}
         </style>
         
@@ -221,6 +208,7 @@
 
             </script>
         </article>
+
 				<div class="container" id="con3" style="height:300px; width:300px;   margin-left:auto; margin-right:auto; background-image:url(img/irongrip.png)">
          	<video autoplay="autoplay" class="easyrtcMirror" class="callerVideo" id="selfVideo" style="height:100%; width:100%; " muted="muted" volume="0" ></video>
 				
@@ -249,8 +237,7 @@
 								<video autoplay="autoplay" class="callerVideo"  id="callerVideo3" style="flex-order: 3"></video>
 							</section>
             </div>
-						
-						<b><H2>My Localisation</h2></b>
+						<!--<b><H2>My Localisation</h2></b>-->
             <div id="map">
 
             </div>
