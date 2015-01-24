@@ -1,0 +1,55 @@
+<html>
+<head>
+     <meta charset="UTF-8">
+   <title>Chat</title>
+   
+   <link rel="stylesheet" type="text/css" href="style.css" />
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+</head>
+<body>
+<div class="container">
+	<section id="content">
+	<!-- form 
+		 <form action="/Rooms" method="post">
+			<h1>Create Room</h1>
+			<div>
+				<input type="text" placeholder="nameroom" required="" id="roomname" />
+			</div>
+			<div>
+				<button  onclick="/">create</button>
+			</div>
+			<input type="submit" value="Send message" />
+		</form>-->
+		<form id="myform" action="/Rooms" method="POST">
+  Name: <input type="text" id="name" name="nom"/><br/>
+  <input type="submit" id="roomSubmit" value="Submit"/>
+</form>
+
+<script type="text/javascript">
+   $("#myform").bind("submit", function(evt) {
+  $.ajax({
+		url: "/Rooms",
+		type: "POST",
+		contentType: "application/json",
+		data: JSON.stringify({nom:$('#name').val()}),
+		success: function (data, textStatus, jqXHR) {
+			// do something with your data here.
+			window.location.href = "/Rooms";
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			// likewise do something with your error here.
+	
+		}
+	});
+	  return false;
+                });
+</script>
+		<div class="button">
+		</div><!-- button -->
+	</section><!-- content -->
+</div><!-- container -->
+
+
+</body>
+</html>
