@@ -1,7 +1,8 @@
 var fs = require('fs');
 var express = require('express');
 var static  = require('node-static');
-var easyrtc = require("easyrtc");  
+var easyrtc = require("easyrtc");
+var routes = require('./routes');   
 var app = express();
 var http    = require("http");              // http server core module
 var express = require("express");           // web framework external module
@@ -27,9 +28,21 @@ app.configure(function () {
         maxAge: hourMs
     }));
     app.use(express.directory('static'));
-	app.use(express.directory('static/js'));
+		app.use(express.directory('static/js'));
     app.use(express.errorHandler());
+		app.set('views', __dirname + '/views');
+		app.set('view engine', 'jade');
+		app.set('view options', { layout: false });
+		app.use(express.methodOverride());
 });
+
+// Routes
+app.get('/', routes.index);
+app.get('/file-list', routes.getFileList);
+app.post('/upload-file', routes.uploadFile);
+app.get('/file/:id/:name', routes.getFile);
+
+
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 var rtc = easyrtc.listen(app, io);

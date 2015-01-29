@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl" uri="ontoprax_project/praxedit/build/war/default-projects/pizza/pizza.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="http://www.imag.fr/Users/mfsy/ontoprax-ontologies-owl-REVISION-3085/root-ontology.owl" uri="doc%20educlever/doc_pc_linux/ontoprax.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="http://www.inria.fr/2007/09/11/humans.rdfs" uri="2eme%20semstre/web%20semantique%20cours/seance1/human.rdfs.xml"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="http://www.inria.fr/2007/09/11/humans.rdfs-instances" uri="human.rdf"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="http://www.semanticweb.org/alaya/ontologies/2015/0/menu" uri="Menu.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="http://www.w3.org/2004/02/skos/core" uri="2eme%20semstre/web%20semantique%20cours/seance%202/skos.rdf"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="shadowed:http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl" uri="ontoprax_project/praxedit/war/default-projects/pizza/pizza.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="shadowed:http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl" uri="doc%20educlever/doc_pc_linux/webprotege-2.5.0/src/main/webapp/default-projects/pizza/pizza.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="shadowed:http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl" uri="doc%20educlever/doc_pc_linux/knowledgemap/praxedit/war/default-projects/pizza/pizza.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="shadowed:http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl" uri="doc%20educlever/doc_pc_linux/knowledgemap/praxedit/build/war/default-projects/pizza/pizza.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="shadowed:http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl" uri="doc%20educlever/doc_pc_linux/knowledgemap/praxedit/$%7Benv.CATALINA_HOME%7D/webapps/webprotege/default-projects/pizza/pizza.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="shadowed:http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl" uri="doc%20educlever/doc_pc_linux/webs/knowledgemap/praxedit/$%7Benv.CATALINA_HOME%7D/webapps/webprotege/default-projects/pizza/pizza.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="shadowed:http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl" uri="doc%20educlever/doc_pc_linux/webs/knowledgemap/praxedit/war/default-projects/pizza/pizza.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="shadowed:http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl" uri="apache-tomcat-8.0.15/webapps/praxedit/default-projects/pizza/pizza.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="shadowed:http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl" uri="apache-tomcat-8.0.9/webapps/praxedit/default-projects/pizza/pizza.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="shadowed:http://www.inria.fr/2007/09/11/humans.rdfs-instances" uri="2eme%20semstre/web%20semantique%20cours/seance1/human.rdf.xml"/>
+        <uri id="Automatically generated entry, Timestamp=1421494974438" name="shadowed:http://www.inria.fr/2007/09/11/humans.rdfs-instances" uri="2eme%20semstre/web%20semantique%20cours/seance%203/human.rdf"/>
+    </group>
+</catalog>

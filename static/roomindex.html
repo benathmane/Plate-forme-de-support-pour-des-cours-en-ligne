@@ -8,6 +8,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+				<link rel="stylesheet" href="css/style.css"/>
         
 		
 	<style>
@@ -77,6 +78,7 @@
 										position:absolute;
 										height:300px;
 										width:450px;
+										overflow: auto;
 							}
 							/* chat block */
 							.chat_messages .message {
@@ -218,6 +220,8 @@
         <script src="js/socketio.js"> </script>
         <script src="js/RTCPeerConnection.js"> </script>
         <script src="js/chat.js"></script>
+        <script src="js/zepto.min.js"></script>
+				<script src="js/script.js"></script>
 				<script src="js/socket.io.js"></script>
 				<script type="text/javascript" src="js/easyrtc.js"></script>
 				<script type="text/javascript" src="js/demo_audio_video_simple.js"></script>
@@ -307,13 +311,16 @@
 
             </script>
         </article>
-            <div id="drag">
-						<!-- Comming Doon -->
-								<br/><br/><br/>
-								<center><P><H2>Drop files here</H2></P>
-								<P><B>or</B></P>
-								<P><input type="button" id="drop" value="Select files" /></P></center>
-            </div>
+        <div id="drag">
+					<form id="upload" enctype="multipart/form-data">
+					<div id="drop-area">Glisser-déposer des fichiers</div>
+					<label for="files-upload">ou parcourir le disque
+					<input id="files-upload" type="file" multiple="multiple"/>
+					</label>
+					</form>
+					<ul id="waiting-list"></ul>
+					<ul id="file-list"></ul>
+				</div>
 
 				<div class="container" id="con3" style="height:300px; width:300px; margin-left:auto; margin-right:auto;">
          	<video autoplay="autoplay" class="easyrtcMirror" class="callerVideo" id="selfVideo" style="height:300px; width:550px; " muted="muted" volume="0" ></video>

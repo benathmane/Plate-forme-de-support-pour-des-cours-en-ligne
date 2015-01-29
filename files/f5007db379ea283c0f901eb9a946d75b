@@ -1,0 +1,69 @@
+*MapReduce c'est faire des traittement sur les données.
+-map: on a une fonction qu'ont veut appliquer sur une liste d'element
+---> completement parallele
+-Reduce j'applique recursivement une fonction à une liste
+----> un petit parallele
+*WordCount: 
+input: text
+spliting: en fonction de latialle on repatie le travail sur plusieurs unité
+mapping: on applique la fonction qu'on veut appliquer
+shuffling: regroupe par clé
+Reducing: combient de fois j'ai le mot
+output: pour chaque mot on a le nombre d'occurrence
+*MapProduce Paradigm
+split stage:Transformer l'ensemble clé valeur en une liste
+Map stage: clé valeur en entrée et je reforme la clé valeur en sortie.
+Shffle stage: 
+*mapreduce framework: sert à à gérer (planification tâche/) 
+                     il faut que le code va où il ya les données, exécuter là ou il y a les données.
+
+*yarn: ensemble de ressource qui permet de gerer les ressourcee
+yarn s'occupe de ce sui est ressource
+MaP reduce se fait que de map reuce(simplifié et plus efficace)
+*yarn il a complexié les chose, JobTracker est divisé en 2 demons
+  1) ResourceManager: administrassion  de ressource
+  2) Application Master: gerer les application
+ avec yarn on peut faire mapreduce sur les meme nom (pas le cas dans mapreduce1)
+ 
+ les noeud ont une ressource qui sont fait à la demande
+ toussui est gestion d'application c'est applicaton manager
+ 
+*Deamons Map
+  - node Manager (gerer les ressource yarn des noeud)
+  - Resource Manager: (discuter avec les nodes manager / application négocie avec resource manager)
+  - containers ( une application  peut tourner sur plusieurs contenairs/)
+ *YARN: Runing an application
+  - L'application master c'est elle qui va communiquer avec l'application client
+  - l'application 
+  
+*Yarn et MapReduce
+yarn système de gestion de resource decentralisé
+il siat pas qu'il fait du mapreduce
+un job mapreduce est une instance de l'application  (job)
+
+Les données d'entrée et sortie sont des données HDFS
+
+diapo 44: à revoir
+Region Server: Hbase
+DataNode: HDFS
+Node Manager: Yarn
+---> chaque noeud contient tous ça
+Nemnode doit synchroniser avec le noeud
+RessourceManager  doit synchroniser avec le noeud
+Habase  doit synchroniser avec le noeud (stocker les donneés)
+yarn: pouvoir gérer tous ce qui est ressource
+
+serializable: trandferer les données en reseaux
+************************************TP********************
+hadoop com.sun.tools.javac.Main WordCount.java
+
+hadoop jar wc.jar WordCount s1 /user/hadoop/testou
+
+hdfs dfs -ls /user/hadoop
+
+ hdfs dfs -cat /user/hadoop/testout/part-r-00000
+
+
+éditeur---> vi WordCount.java
+sortir--> echap:wq
+  
