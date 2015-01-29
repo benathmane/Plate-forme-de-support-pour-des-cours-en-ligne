@@ -241,7 +241,8 @@
     </head>
 
     <!-- <body onload="connectVideo(document.URL.substring(1).split('/')[4]);connectData();alert(document.URL.substring(1).split('/')[4])"> -->
-	<body onload="connectData();alert(document.URL.substring(1).split('/')[4])">
+	<!-- <body onload="connectData();alert(document.URL.substring(1).split('/')[4])"> -->
+	<body onload="connectData();">
         <article>
 					<script>
 					$(document).ready(function(){
@@ -345,7 +346,7 @@
 								<div class="profiles">
 									<div id="users"></div>
 								</div><br/>
-							<<div id="iam">Not yet connected...</div>
+							<div id="iam">Not yet connected...</div>
 							<section id="videos">
 								<video autoplay="autoplay" class="callerVideo"  id="callerVideo1" style="flex-order: 1"></video>
 								<video autoplay="autoplay" class="callerVideo"  id="callerVideo2" style="flex-order: 2"></video>
