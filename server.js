@@ -1,62 +1,118 @@
+var fs = require('fs');
+var express = require('express');
 var static  = require('node-static');
+var easyrtc = require("easyrtc");  
+var app = express();
 var http    = require("http");              // http server core module
 var express = require("express");           // web framework external module
 var io      = require("socket.io");         // web socket external module
-var easyrtc = require("easyrtc");  
 var bodyParser = require('body-parser');
-path = require('path');
-var httpApp = express();         // EasyRTC external module
-
-/*var file = new(static.Server)();
-var app = http.createServer(function (req, res) {
-  file.serve(req, res);
-}).listen(2015);
-*/
-var port = process.env.PORT ||2015;
-var host = process.env.HOST || "127.0.0.1";
-
-var app = http.createServer(httpApp).listen(port, host, function() {
-  console.log("Server listening to %s:%d within %s environment",
-              host, port, httpApp.get('env'));
-});
-// Start Socket.io so it attaches itself to Express server
-var socketServer = io.listen(app, {"log level":1});
-
-// Start EasyRTC server
-var rtc = easyrtc.listen(httpApp, socketServer);
-/*
-var app = express();
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());*/
-httpApp.use(express.static(__dirname + '/'));
-
-httpApp.use(bodyParser.urlencoded({
-    extended: true
-}));
-httpApp.use(bodyParser.json());
-
-MongoClient = require('mongodb').MongoClient,
-Server = require('mongodb').Server,
-
+var path = require('path');
+var MongoClient = require('mongodb').MongoClient;
+var Server = require('mongodb').Server;
 CollectionDriver = require('./collectionDriver').CollectionDriver;
-
-/* This will allow Cozy to run your app smoothly but
- it won't break other execution environment */
-var port = process.env.PORT ||2015;
-var host = process.env.HOST || "127.0.0.1";
-
-
-httpApp.set('views', path.join(__dirname, 'views'));
-httpApp.set('view engine', 'jade');
-
 var mongoHost = 'localHost'; //A
 var mongoPort = 27017; 
 var collectionDriver;
- 
 var mongoClient = new MongoClient(new Server(mongoHost, mongoPort)); //B
+/* app.use(bodyParser.urlencoded({ extended: true }));*/
+app.use(bodyParser.json());
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+var htmlDir="/static";
 
+app.configure(function () {
+    var hourMs = 1000 * 60 * 60;
+    app.use(express.static('static', {
+        maxAge: hourMs
+    }));
+    app.use(express.directory('static'));
+	app.use(express.directory('static/js'));
+    app.use(express.errorHandler());
+});
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
+var rtc = easyrtc.listen(app, io);
+server.listen(8088);
+var channels = {};
+var usernames = {};
+
+
+io.sockets.on('connection', function (socket) {
+    var initiatorChannel = '';
+    if (!io.isConnected) {
+        io.isConnected = true;
+    }
+
+    socket.on('new-channel', function (data) {
+        if (!channels[data.channel]) {
+            initiatorChannel = data.channel;
+        }
+
+        channels[data.channel] = data.channel;
+        onNewNamespace(data.channel, data.sender);
+    });
+
+    socket.on('sendchat', function (data) {
+		// we tell the client to execute 'updatechat' with 2 parameters
+		io.sockets.emit('updatechat', socket.username, data);
+	});
+
+	socket.on('adduser', function(username){
+		// we store the username in the socket session for this client
+		socket.username = username;
+		socket.emit()
+		// add the client's username to the global list
+		usernames[username] = username;
+		// echo to client they've connected
+		socket.emit('updatechat', 'SERVER', 'you have connected');
+		// echo globally (all clients) that a person has connected
+		socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
+		// update the list of users in chat, client-side
+		io.sockets.emit('updateusers', usernames);
+	});
+
+	// when the user disconnects.. perform this
+	socket.on('disconnect', function(){
+		// remove the username from global usernames list
+		delete usernames[socket.username];
+		// update list of users in chat, client-side
+		io.sockets.emit('updateusers', usernames);
+		// echo globally that this client has left
+		socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
+	});
+
+    socket.on('presence', function (channel) {
+        var isChannelPresent = !! channels[channel];
+        socket.emit('presence', isChannelPresent);
+    });
+
+    socket.on('disconnect', function (channel) {
+        if (initiatorChannel) {
+            delete channels[initiatorChannel];
+        }
+    });
+	 socket.on('send:coords', function (data) {
+        socket.broadcast.emit('load:coords', data, socket.username);
+    });
+});
+
+function onNewNamespace(channel, sender) {
+    io.of('/' + channel).on('connection', function (socket) {
+        if (io.isConnected) {
+            io.isConnected = false;
+            socket.emit('connect', true);
+        }
+
+        socket.on('message', function (data) {
+            if (data.sender == sender)
+                socket.broadcast.emit('message', data.data);
+        });
+    });
+}
+
+
+//OPEN Connection to MongoDB
 mongoClient.open(function(err, mongoClient) { //C
   if (!mongoClient) {
       console.error("Error! Exiting... Must start MongoDB first");
@@ -66,31 +122,28 @@ mongoClient.open(function(err, mongoClient) { //C
   collectionDriver = new CollectionDriver(db); //F
 });
 
-// Starts the server itself
 
-var htmlDir="/pages";
-// At the root of your website, we show the index.html page
-httpApp.get('/', function(req, res) {
-   console.log ('root');
-   res.sendfile(__dirname + '/'+htmlDir+'/Acceuil.html');
+
+//ROUNTING 
+app.get('/', function(req, res) {
+   res.sendfile('index.html');
 });
 
-httpApp.get('/register', function (req, res) {
+app.get('/register', function (req, res) {
   res.sendfile(__dirname + '/'+htmlDir+'/register.html');
 });
 
-httpApp.get('/createroom', function (req, res) {
-  res.sendfile(__dirname + '/'+htmlDir+'/createroom.html');
-  consol.log("test");
+app.get('/createroom', function (req, res) {
+	res.sendfile(__dirname + '/'+htmlDir+'/createroom.html');
 });
 
-
-httpApp.get('/index', function (req, res) {
-  console.log ('index');
-  res.sendfile(__dirname + '/'+htmlDir+'/index.html');
+app.get('/joinRoom/:id', function (req, res) {
+	
+	res.sendfile(__dirname + '/'+htmlDir+'/roomindex.html');
 });
 
-httpApp.get('/:collection/:entity', function(req, res) { //I
+//REST API
+app.get('/:collection/:entity', function(req, res) { //I
    var params = req.params;
    var entity = params.entity;
    var collection = params.collection;
@@ -107,7 +160,7 @@ httpApp.get('/:collection/:entity', function(req, res) { //I
    }
 });
 
-httpApp.get('/:collection', function(req, res) { //A
+app.get('/:collection', function(req, res) { //A
    var params = req.params; //B
    collectionDriver.findAll(req.params.collection, function(error, objs) { //C
     	  if (error) { res.send(400, error); } //D
@@ -121,7 +174,7 @@ httpApp.get('/:collection', function(req, res) { //A
          }
    	});
 });
-httpApp.post('/:collection', function(req, res) { //A
+app.post('/:collection', function(req, res) { //A
     var object = req.body;
     var collection = req.params.collection;
 	console.log(collection);
@@ -132,7 +185,7 @@ httpApp.post('/:collection', function(req, res) { //A
      });
 });
  
- httpApp.put('/:collection', function(req, res) { //A
+ app.put('/:collection', function(req, res) { //A
     var object = req.body;
     var collection = req.params.collection;
     collectionDriver.save(collection, object, function(err,docs) {

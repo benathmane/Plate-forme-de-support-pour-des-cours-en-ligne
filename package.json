@@ -1,11 +1,20 @@
 {
-  "name": "mongo-server",
-  "version": "0.0.1",
-  "private": true,
+  "name": "socketio-over-nodejs",
+  "preferGlobal": true,
+  "version": "2.0.0-6",
+  "scripts": {
+    "start": "signaler.js"
+  },
+  "main": "signaler.js",
+  "engines": {
+    "node": ">=0.6"
+  },
   "dependencies": {
-    "express": "3.3.4",
+    "socket.io": "0.9.x",
+    "express": "3.2.x",
 	"body-parser":"*",
     "jade": "1.1.5",
-	 "mongodb":"1.3.23"
+	"mongodb":"1.3.23"
   }
+ 
 }
