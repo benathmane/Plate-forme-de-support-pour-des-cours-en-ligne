@@ -160,6 +160,30 @@ app.get('/:collection/:entity', function(req, res) { //I
    }
 });
 
+app.get('/user/:name/:password', function(req, res) { //I
+   var params = req.params;
+  
+   var name = params.name;
+   var password = params.password;
+   collectionDriver.getUserByNamePassword("Users", name ,password, function(error, objs) { //J
+   
+   if (error) { 
+          res.send(400, error);
+     }
+     else {  
+      if (JSON.stringify(objs) === '[]') {
+          res.send(400, error);
+       }else{
+          // res.send(JSON.stringify(objs));
+          res.send(212, error);
+       }
+           
+            
+          } 
+       });
+   
+});
+
 app.get('/:collection', function(req, res) { //A
    var params = req.params; //B
    collectionDriver.findAll(req.params.collection, function(error, objs) { //C

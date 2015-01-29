@@ -1,14 +1,20 @@
+html
+  head
+    style
+      include bootstrap.min.css
 body
     h1= collection
     #objects
-        table(border=1)
+        table(class=".table table-striped", style='width: 100%')
           if objects.length > 0
               - each val, key in objects[0]
                   th= key 
           - each obj in objects
-            tr.obj
+            tr.obj(class="active")
               - each val, key in obj
                 td.key= val
               td 
                 a(href='/joinRoom/'+ obj._id) #{'join'}
+    br
+    br
     a(href='/createroom') #{'create'}

@@ -95,6 +95,21 @@ CollectionDriver.prototype.getRoomResources = function(collectionName, roomId, c
     });
 };
 
+//single item from a collection by its _id.
+CollectionDriver.prototype.getUserByNamePassword = function(collectionName, name,password, callback) { //A
+    
+            this.getCollection(collectionName, function(error, the_collection) { //A
+        if (error) callback(error)
+        else {
+            the_collection.find({'name':name,'password':password}).toArray(function(error, results) { //B
+          if( error ) callback(error);
+          else callback(null, results);
+        });
+      }
+    });
+
+
+};
   
 
 exports.CollectionDriver = CollectionDriver;

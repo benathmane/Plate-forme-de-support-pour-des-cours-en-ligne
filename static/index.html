@@ -1,38 +1,66 @@
 <html>
 <head>
      <meta charset="UTF-8">
-   <title>Chat</title>
+   <title>Web Project </title>
    
    <link rel="stylesheet" type="text/css" href="style.css" />
-   
-   <script type="text/javascript">
-        function forward(){ window.location = "/static/";}
-    </script>
-	
+    
+	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 </head>
-<body onload="setTimeout('forward()', 10000)">
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+   $("#sign").click(function(){
+   	$(location).attr('href',"http://127.0.0.1:8088/Rooms");
+   	
+  //Connection code (To correct)	
+	/*		  $.ajax({
+					url: "http://127.0.0.1:8088/user/"+$("#name").val()+"/"+$("#inputPassword").val(),
+					type: "GET",
+					contentType: "application/json",
+					
+					statusCode: {
+   						
+    						212: function() {
+     						 	$(location).attr('href',"http://127.0.0.1:8088/Rooms");
+    						},
+    						 400: function() {
+     						 alert( "User not found" );
+    						}
+  					}
+				
+				});
+	 */
+    });
+
+});
+</script>
+
+
+<body>
+
+
+
 <div class="container">
-	<section id="content">
-		<form action="">
-			<h1>Login Form</h1>
-			<div>
-				<input type="text" placeholder="Username" required="" id="username" />
-			</div>
-			<div>
-				<input type="password" placeholder="Password" required="" id="password" />
-			</div>
-			<div>
-				<!--<input type="submit" value="Log in" />
-				<button  onclick="/room">Log in</button>-->
-				<a href="/Rooms">Log in</a>
-				<a href="/register">Register</a>
-			</div>
-		</form><!-- form -->
-		<div class="button">
-		</div><!-- button -->
-	</section><!-- content -->
-</div><!-- container -->
+
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputEmail" class="sr-only">User name</label>
+        <input  id="name" class="form-control" placeholder="User name" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>      
+        <button class="btn btn-lg btn-primary btn-block" type="buuton" id="sign">Sign in</button>
+		
+	
+      </form>
 
 
+
+		<a href="/register">Register</a>
+
+</div> 
+	
+	
 </body>
 </html>
