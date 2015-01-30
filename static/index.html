@@ -11,27 +11,21 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-   $("#sign").click(function(){
-   	$(location).attr('href',"http://127.0.0.1:8088/Rooms");
-   	
-  //Connection code (To correct)	
-	/*		  $.ajax({
+   $("#sign").click(function(){   
+			  $.ajax({
 					url: "http://127.0.0.1:8088/user/"+$("#name").val()+"/"+$("#inputPassword").val(),
 					type: "GET",
-					contentType: "application/json",
-					
 					statusCode: {
    						
     						212: function() {
-     						 	$(location).attr('href',"http://127.0.0.1:8088/Rooms");
+                 	$(location).attr('href',"http://127.0.0.1:8088/Rooms");
     						},
     						 400: function() {
-     						 alert( "User not found" );
+     						   alert( "User not found" );
     						}
-  					}
-				
+  					}             			
 				});
-	 */
+	 
     });
 
 });
@@ -50,7 +44,7 @@ $(document).ready(function(){
         <input  id="name" class="form-control" placeholder="User name" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>      
-        <button class="btn btn-lg btn-primary btn-block" type="buuton" id="sign">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="button" id="sign">Sign in</button>
 		
 	
       </form>

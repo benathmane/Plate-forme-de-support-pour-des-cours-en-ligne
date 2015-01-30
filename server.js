@@ -41,8 +41,6 @@ app.get('/', routes.index);
 app.get('/file-list', routes.getFileList);
 app.post('/upload-file', routes.uploadFile);
 app.get('/file/:id/:name', routes.getFile);
-
-
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 var rtc = easyrtc.listen(app, io);
@@ -61,7 +59,6 @@ io.sockets.on('connection', function (socket) {
         if (!channels[data.channel]) {
             initiatorChannel = data.channel;
         }
-
         channels[data.channel] = data.channel;
         onNewNamespace(data.channel, data.sender);
     });
@@ -229,4 +226,16 @@ app.post('/:collection', function(req, res) { //A
           if (err) { res.send(400, err); } 
           else { res.send(201, docs); } //B
      });
+});
+
+app.get('/get/All/Users', function(req, res) { //A
+   var params = req.params; //B
+   collectionDriver.getAllUsers("Users", function(error, objs) { //C
+        if (error) { res.send(400, error); } //D
+        else {
+           res.set('Content-Type','Application/json'); //G
+                  res.send(JSON.stringify(objs));
+            }
+         
+    });
 });

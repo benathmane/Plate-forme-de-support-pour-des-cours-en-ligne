@@ -5,7 +5,7 @@ var connectCount = 0;
 var maxCALLERS = 3;
 
 
-function connectData() {
+function connectData(roomName) {
 	//var otherClientsDiv = document.getElementById('otherClients');
     easyrtc.enableDataChannels(true);
   //easyrtc.enableVideo(true);
@@ -13,7 +13,14 @@ function connectData() {
 	easyrtc.setVideoDims(640,480);
    // easyrtc.setRoomOccupantListener(callEverybodyElse(roomName));
 	
- 	easyrtc.easyApp("easyrtc.audioVideoSimple", "selfVideo", ["callerVideo1","callerVideo2","callerVideo3"],  loginSuccess,loginFailure);
+
+
+
+ 	easyrtc.easyApp("easyrtc.webProject", "selfVideo", ["callerVideo1","callerVideo2","callerVideo3"],  loginSuccess,loginFailure);
+
+    easyrtc.joinRoom(roomName, null, loginSuccess,loginFailure);
+    
+
     easyrtc.setDisconnectListener( function() {
         easyrtc.showError("LOST-CONNECTION", "Lost connection to signaling server");
     });

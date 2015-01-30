@@ -110,6 +110,42 @@ CollectionDriver.prototype.getUserByNamePassword = function(collectionName, name
 
 
 };
+
+//single item from a collection by its _id.
+CollectionDriver.prototype.getAllUsers = function(collectionName,callback) { //A
+    
+        this.getCollection(collectionName, function(error, the_collection) { //A
+        if  (error) callback(error)
+        else {
+              the_collection.find().toArray(function(error, results) { //B
+              if( error ) callback(error);
+              else {
+                /*
+                  var strJson = "{";
+                  var intCount = results.length;
+                  if(intCount > 0){
+                    
+                            for(var i=0; i<intCount;i++){
+                                    strJson += '{"user":"' + results[i].nom + '"}'
+                                    if (i<intCount-1){strJson+=',';}
+                            }
+                    
+                  }
+                  console.log(intCount);
+                  strJson+='}';
+                  console.log(strJson);
+
+                  callback("",JSON.stringify(strJson));
+                  */
+                  callback("",results);
+               }
+          });
+        }
+    });
+
+
+};
+
   
 
 exports.CollectionDriver = CollectionDriver;
