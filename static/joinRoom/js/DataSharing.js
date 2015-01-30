@@ -7,6 +7,7 @@ var maxCALLERS = 3;
 
 function connectData(roomName) {
 	//var otherClientsDiv = document.getElementById('otherClients');
+   
     easyrtc.enableDataChannels(true);
   //easyrtc.enableVideo(true);
   // easyrtc.enableAudio(true);	

@@ -22,6 +22,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 var htmlDir="/static";
 
+
+app.use(express.cookieParser());
+
+app.use(express.session({secret: '1234567890QWERTY'}));
+
+
 app.configure(function () {
     var hourMs = 1000 * 60 * 60;
     app.use(express.static('static', {
@@ -149,7 +155,24 @@ app.get('/createroom', function (req, res) {
 
 app.get('/joinRoom/:id', function (req, res) {
 	
+  var name = req.session.identifiant;
+  //console.log("*************==="+name)
+  if(name!=undefined){
+
+    //res.render('page', { title: 'Ninja Store - ' + name, username: req.session.username, content:contents[name] });
+    /*
+     var options = {
+      headers: {
+        'identifiant':name
+        }
+      };
+      */
 	res.sendfile(__dirname + '/'+htmlDir+'/roomindex.html');
+  }
+  else{
+    //res.send(400, null);
+    res.status(404).render('404', { title: 'File not Found'});
+  }
 });
 
 //REST API
@@ -161,8 +184,8 @@ app.get('/:collection/:entity', function(req, res) { //I
    if (entity) {
        collectionDriver.get(collection, entity, function(error, objs) { //J
           if (error) { res.send(400, error); }
-          else { //res.send(200, objs); 
-		  res.redirect('/index');
+          else { res.send(200, objs); 
+		  //res.redirect('/index');
 		  } //K
        });
    } else {
@@ -196,6 +219,14 @@ app.get('/user/:name/:password', function(req, res) { //I
 
 app.get('/:collection', function(req, res) { //A
    var params = req.params; //B
+   //console.log("------------------"+req.params.nom);
+   //console.log(req.param('nom'));
+   //app.use(express.session({secret: '1234567890QWERTY'}));
+
+    
+   //  if(req.param('nom')!=undefined) req.session.username = req.param('nom'); 
+    if(req.param('nom')!=undefined) req.session.identifiant = req.param('nom');
+
    collectionDriver.findAll(req.params.collection, function(error, objs) { //C
     	  if (error) { res.send(400, error); } //D
 	      else { 
@@ -219,10 +250,12 @@ app.post('/:collection', function(req, res) { //A
      });
 });
  
- app.put('/:collection', function(req, res) { //A
-    var object = req.body;
+ app.put('/Users/update/:creterea/:query', function(req, res) { //A
+    var creterea = req.params.creterea;
+     var query = req.params.query;
     var collection = req.params.collection;
-    collectionDriver.save(collection, object, function(err,docs) {
+    
+    collectionDriver.updateUserRoom("Users", creterea,query, function(err,docs) {
           if (err) { res.send(400, err); } 
           else { res.send(201, docs); } //B
      });
@@ -234,6 +267,19 @@ app.get('/get/All/Users', function(req, res) { //A
         if (error) { res.send(400, error); } //D
         else {
            res.set('Content-Type','Application/json'); //G
+                  res.send(JSON.stringify(objs));
+            }
+         
+    });
+});
+
+
+app.get('/get/All/User/Room/:iduser', function(req, res) { //A
+   //var params = req.params; //B
+   collectionDriver.getUsersRooms("Users",req.params.iduser, function(error, objs) { //C
+        if (error) { res.send(400, error); } //D
+        else {
+              res.set('Content-Type','Application/json'); //G
                   res.send(JSON.stringify(objs));
             }
          

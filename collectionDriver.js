@@ -37,6 +37,7 @@ CollectionDriver.prototype.get = function(collectionName, id, callback) { //A
     });
 };
 
+
 //save new object
 CollectionDriver.prototype.save = function(collectionName, obj, callback) {
     this.getCollection(collectionName, function(error, the_collection) { //A
@@ -52,16 +53,19 @@ CollectionDriver.prototype.save = function(collectionName, obj, callback) {
 
 
 //update a specific object
-CollectionDriver.prototype.update = function(collectionName, obj, entityId, callback) {
+CollectionDriver.prototype.updateUserRoom = function(collectionName, criterea,modif, callback) {
     this.getCollection(collectionName, function(error, the_collection) {
         if (error) callback(error)
         else {
-	        obj._id = ObjectID(entityId); //A convert to a real obj id
-	        obj.updated_at = new Date(); //B
-            the_collection.save(obj, function(error,doc) { //C
-            	if (error) callback(error)
-            	else callback(null, obj);
-            });
+     
+	        the_collection.update(
+          //{"name" : criterea},
+          {"_id" : ObjectID(criterea)},
+          {$push: { "rooms": modif } }
+          , function(error,doc) { //C
+            	if (error) callback(error)  
+              callback(null, "updated");          	
+            });          
         }
     });
 }
@@ -87,7 +91,7 @@ CollectionDriver.prototype.getRoomResources = function(collectionName, roomId, c
     this.getCollection(collectionName, function(error, the_collection) { //A
         if (error) callback(error)
         else {
-            the_collection.find({'roomId':roomId}).toArray(function(error, results) { //B
+            the_collection.find({'nom':roomId}).toArray(function(error, results) { //B
           if( error ) callback(error);
           else callback(null, results);
         });
@@ -145,6 +149,49 @@ CollectionDriver.prototype.getAllUsers = function(collectionName,callback) { //A
 
 
 };
+
+
+/*
+//single item from a collection by its _id.
+CollectionDriver.prototype.getUsersRooms = function(collectionName,userIdentifier,callback) { //A
+    
+        this.getCollection(collectionName, function(error, the_collection) {   //A
+        if  (error) callback(error)
+        else {
+              the_collection.find({'name':userIdentifier}).toArray(function(error, results) { //B
+              if( error ) callback(error);
+              else {
+                
+                  var strJson = "[";
+                  var intCount = results.length;
+                  if(intCount > 0){
+                    
+                            for(var i=0; i<intCount;i++){
+                              rooms = results[i].rooms;
+                              for(var j=0; i<rooms.length;j++){
+                                CollectionDriver.getCollection("Rooms", function(error, col) {
+                                  col.find({'nom':rooms[j]}).toArray(function(error, resRooms) {
+                                    strJson += resRooms;
+                                  });
+                                });
+                              }
+                                    
+                                
+                            }
+                    
+                  }
+                  strJson+=']';
+                  
+                  callback("",strJson);
+                 
+               }
+          });
+        }
+    });
+
+
+};
+*/
 
   
 

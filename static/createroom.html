@@ -17,7 +17,7 @@ $(document).ready(function(){
 		success: function (data, textStatus, jqXHR) {
 			var tableContent = "";
 			 for ( var i in data ) {
-                        tableContent += "<option value="+data[i].name+">"+data[i].name+"</option>";
+                        tableContent += "<option value="+data[i]._id+">"+data[i].name+"</option>";
                     }		
 			$("#allowedUsers").html(tableContent);
 
@@ -47,7 +47,26 @@ $(document).ready(function(){
    $("#myform").bind("submit", function(evt) {
    
    	$('#allowedUsers :selected').each(function(i, selected){ 
-  				alert( $(selected).text()); 
+  				//alert( $(selected).val()); 
+  				
+  				 $.ajax({
+				url: "Users/update/"+$(selected).val()+"/"+$('#name').val(),
+				type: "PUT",
+				contentType: "application/json",
+				//data: JSON.stringify(
+				//	{
+				//		_id:"54cb5afbc90c8961aafd01c1",
+				///		$push: { rooms: 20 } 
+				//	}
+				//	),
+				success: function (data, textStatus, jqXHR) {
+					alert("added room");
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					alert("error add room");
+			
+				}
+			});
 	});
    	
 		  $.ajax({

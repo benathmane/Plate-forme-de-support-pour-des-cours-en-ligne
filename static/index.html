@@ -18,7 +18,9 @@ $(document).ready(function(){
 					statusCode: {
    						
     						212: function() {
-                 	$(location).attr('href',"http://127.0.0.1:8088/Rooms");
+
+                  $( "#formConnect" ).submit();
+                 	//$(location).attr('href',"http://127.0.0.1:8088/Rooms");
     						},
     						 400: function() {
      						   alert( "User not found" );
@@ -38,14 +40,17 @@ $(document).ready(function(){
 
 <div class="container">
 
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputEmail" class="sr-only">User name</label>
-        <input  id="name" class="form-control" placeholder="User name" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>      
-        <button class="btn btn-lg btn-primary btn-block" type="button" id="sign">Sign in</button>
-		
+<h2 class="form-signin-heading">Please sign in</h2>
+      
+
+        <form class="form-signin" id="formConnect"  action="http://127.0.0.1:8088/Rooms">
+        
+            <label for="inputEmail" class="sr-only">User name</label>
+            <input  name ="nom" id="name" class="form-control" placeholder="User name" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>      
+            <button class="btn btn-lg btn-primary btn-block" type="button" id="sign">Sign in</button>
+    		
 	
       </form>
 
