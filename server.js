@@ -164,6 +164,7 @@ app.get('/createroom', function (req, res) {
 app.get('/joinRoom/:id', function (req, res) {
 	
   var name = req.session.identifiant;
+   var nameR = req.params.id;
 
   console.log(name);
   //console.log("*************==="+name)
@@ -178,7 +179,10 @@ app.get('/joinRoom/:id', function (req, res) {
       };
       */
       app.set('identifiant',name);
-
+      var log={name: name, room: nameR};
+	   collectionDriver.save('Logs', log, function(err,docs) {
+          console.log("logsauvgardé");
+     });
       userconnectd=name;
 	res.sendfile(__dirname + '/'+htmlDir+'/roomindex.html',{identifiant: ''+name});
   }

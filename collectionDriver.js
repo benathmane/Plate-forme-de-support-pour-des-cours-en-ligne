@@ -15,6 +15,17 @@ CollectionDriver.prototype.getCollection = function(collectionName, callback) {
     else callback(null, the_collection);
   });
 };
+
+/*This section defines a helper method getCollection to obtain a Mongo collection by name. You define class methods by adding functions to prototype.*/
+/*CollectionDriver.prototype.postLogs = function(collectionName,rooms,user, callback) {
+  this.db.collection(collectionName, function(error, the_collection) {
+    if( error ) callback(error);
+   else{
+      the_collection.push()
+  });
+};
+*/
+
 //appele la collection en A et renvoie tous les objets trouvés en B
 CollectionDriver.prototype.findAll = function(collectionName, callback) {
     this.getCollection(collectionName, function(error, the_collection) { //A
