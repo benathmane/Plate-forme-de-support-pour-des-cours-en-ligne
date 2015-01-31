@@ -1,65 +1,93 @@
 <html>
 <head>
-     <meta charset="UTF-8">
-   <title>Web Project </title>
-   
-   <link rel="stylesheet" type="text/css" href="style.css" />
-    
-	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<meta charset="UTF-8">
+<title>Web Project</title>
+
+<link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="icon" type="image/png" href="img/favicon.png" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 </head>
 
 
 <script type="text/javascript">
-$(document).ready(function(){
-   $("#sign").click(function(){   
-			  $.ajax({
-					url: "http://127.0.0.1:8088/user/"+$("#name").val()+"/"+$("#inputPassword").val(),
-					type: "GET",
-					statusCode: {
-   						
-    						212: function() {
+	$(document).ready(
+			function() {
+				$("#sign").click(
+						function() {
+							$.ajax({
+								url : "http://127.0.0.1:8088/user/"
+										+ $("#name").val() + "/"
+										+ $("#inputPassword").val(),
+								type : "GET",
+								statusCode : {
 
-                  $( "#formConnect" ).submit();
-                 	//$(location).attr('href',"http://127.0.0.1:8088/Rooms");
-    						},
-    						 400: function() {
-     						   alert( "User not found" );
-    						}
-  					}             			
-				});
-	 
-    });
+									212 : function() {
 
-});
+										$("#formConnect").submit();
+										//$(location).attr('href',"http://127.0.0.1:8088/Rooms");
+									},
+									400 : function() {
+										alert("User not found");
+									}
+								}
+							});
+
+						});
+
+			});
 </script>
 
+<header class="row page-header">
+	<hgroup>
+		<h1 class="text-center">
+			Client/Server Side Project<br> <small>A platform online courses</small>
+		</h1>
+	</hgroup>
+</header>
 
 <body>
+	<div class="container">
+		<?php include 'php/include/header.php'; ?>
+		<form class="form-horizontal panel panel-primary" id="formConnect"
+			action="http://127.0.0.1:8088/Rooms">
+			<!-- No need for .row with .form-horizontal-->
+			<div class="panel-heading text-center">
+				<div class="panel-title">
+					<strong>Please sign in</strong>
+				</div>
+			</div>
+			
+			<div class="panel-body">
+				<div class="form-group">
+					<label for="inputEmail" class="col-sm-4 control-label">User
+						name</label>
+					<div class="col-sm-4">
+						<input name="nom" id="name" class="form-control"
+							placeholder="User name" required autofocus>
+					</div>
+				</div>
 
+				<div class="form-group">
+					<label for="inputPassword" class="col-sm-4 control-label">Password</label>
+					<div class="col-sm-4">
+						<input type="password" id="inputPassword" class="form-control"
+							placeholder="Password" required>
+					</div>
+				</div>
+			</div>
 
-
-<div class="container">
-
-<h2 class="form-signin-heading">Please sign in</h2>
-      
-
-        <form class="form-signin" id="formConnect"  action="http://127.0.0.1:8088/Rooms">
-        
-            <label for="inputEmail" class="sr-only">User name</label>
-            <input  name ="nom" id="name" class="form-control" placeholder="User name" required autofocus>
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>      
-            <button class="btn btn-lg btn-primary btn-block" type="button" id="sign">Sign in</button>
-    		
-	
-      </form>
-
-
-
+			<div class="panel-footer">
+				<div class="form-group">
+					<div class="col-sm-offset-4 col-sm-10">
+						<button type="submit" class="btn btn-danger" id="sign">Sign
+							in</button>
+					</div>
+				</div>
+			</div>
+		</form>
 		<a href="/register">Register</a>
-
-</div> 
-	
-	
+	</div>
 </body>
+
 </html>
