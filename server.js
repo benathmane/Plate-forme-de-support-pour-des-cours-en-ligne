@@ -27,6 +27,13 @@ app.use(express.cookieParser());
 
 app.use(express.session({secret: '1234567890QWERTY'}));
 
+var session = require('client-sessions');
+app.use(session({
+  cookieName: 'session',
+  secret: 'random_string_goes_here',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
 
 app.configure(function () {
     var hourMs = 1000 * 60 * 60;
@@ -54,6 +61,7 @@ server.listen(8088);
 var channels = {};
 var usernames = {};
 
+var userconnectd;
 
 io.sockets.on('connection', function (socket) {
     var initiatorChannel = '';
@@ -156,6 +164,8 @@ app.get('/createroom', function (req, res) {
 app.get('/joinRoom/:id', function (req, res) {
 	
   var name = req.session.identifiant;
+
+  console.log(name);
   //console.log("*************==="+name)
   if(name!=undefined){
 
@@ -167,12 +177,21 @@ app.get('/joinRoom/:id', function (req, res) {
         }
       };
       */
-	res.sendfile(__dirname + '/'+htmlDir+'/roomindex.html');
+      app.set('identifiant',name);
+
+      userconnectd=name;
+	res.sendfile(__dirname + '/'+htmlDir+'/roomindex.html',{identifiant: ''+name});
   }
   else{
     //res.send(400, null);
     res.status(404).render('404', { title: 'File not Found'});
   }
+});
+
+app.get('/getConnectedUser', function(req, res) { //I
+  
+      res.send(''+userconnectd);
+   
 });
 
 //REST API
@@ -226,6 +245,7 @@ app.get('/:collection', function(req, res) { //A
     
    //  if(req.param('nom')!=undefined) req.session.username = req.param('nom'); 
     if(req.param('nom')!=undefined) req.session.identifiant = req.param('nom');
+    //req.session.user = user;
 
    collectionDriver.findAll(req.params.collection, function(error, objs) { //C
     	  if (error) { res.send(400, error); } //D
@@ -261,6 +281,16 @@ app.post('/:collection', function(req, res) { //A
      });
 });
 
+app.put('/Rooms/update/:creterea/:query', function(req, res) { //A
+    var creterea = req.params.creterea;
+     var query = req.params.query;
+    var collection = req.params.collection;
+    
+    collectionDriver.updateRoomUser("Rooms", creterea,query, function(err,docs) {
+          if (err) { res.send(400, err); } 
+          else { res.send(201, docs); } //B
+     });
+});
 app.get('/get/All/Users', function(req, res) { //A
    var params = req.params; //B
    collectionDriver.getAllUsers("Users", function(error, objs) { //C
@@ -274,14 +304,28 @@ app.get('/get/All/Users', function(req, res) { //A
 });
 
 
+
+/*
+Code to get rooms of the passed user ==> Not working
+
+
 app.get('/get/All/User/Room/:iduser', function(req, res) { //A
    //var params = req.params; //B
+
+console.log("--------------");
+
    collectionDriver.getUsersRooms("Users",req.params.iduser, function(error, objs) { //C
         if (error) { res.send(400, error); } //D
         else {
-              res.set('Content-Type','Application/json'); //G
-                  res.send(JSON.stringify(objs));
+                console.log("-----qq---------");
+                
+                for( var i = 0; i < JSON.stringify(objs).length; i++) {
+                  console.log(JSON.stringify(objs)[i]);
+                }
+         
+                 res.send(JSON.stringify(objs));
             }
          
     });
 });
+*/

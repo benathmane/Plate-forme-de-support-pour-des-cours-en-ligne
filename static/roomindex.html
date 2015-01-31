@@ -236,6 +236,7 @@
             });
         </script>
 
+        
         <script type="text/javascript" src="js/easyrtc_ft.js"></script>
         <script type="text/javascript" src="js/DataSharing.js"></script>
     </head>
@@ -249,9 +250,22 @@
 						//var req = new XMLHttpRequest();
 						//var headers = req.getAllResponseHeaders().toLowerCase();
 						//alert(headers);
-
-
+								//alert(document.URL.substring(1).split('/')[5]);
+									//alert(getConnectedUser());
 						//$("#chat").hide();
+
+						$.ajax({
+								url: "http://127.0.0.1:8088/getConnectedUser",
+								type: "GET",
+								success: function (data, textStatus, jqXHR) {
+									
+			 							$("#me").html(data);
+					     
+								},
+								
+							});
+
+
 						$("#afficher").click(function(){
 							if ($("#chat").is(":hidden")) {
 									$(this).next("#chat").slideToggle(600);
@@ -353,7 +367,7 @@
 								</div><br/>
 							<div id="iam">Not yet connected...</div>
 							
-
+							<div id="me">.</div>
 							<section id="videos">
 								<video autoplay="autoplay" class="callerVideo"  id="callerVideo1" style="flex-order: 1"></video>
 								<video autoplay="autoplay" class="callerVideo"  id="callerVideo2" style="flex-order: 2"></video>

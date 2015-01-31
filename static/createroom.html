@@ -17,7 +17,7 @@ $(document).ready(function(){
 		success: function (data, textStatus, jqXHR) {
 			var tableContent = "";
 			 for ( var i in data ) {
-                        tableContent += "<option value="+data[i]._id+">"+data[i].name+"</option>";
+                        tableContent += "<option value="+data[i].name+">"+data[i].name+"</option>";
                     }		
 			$("#allowedUsers").html(tableContent);
 
@@ -44,6 +44,23 @@ $(document).ready(function(){
 </form>
 
 <script type="text/javascript">
+
+ function addUserToRoom(room,user){
+		   $.ajax({
+				url: "Rooms/update"+"/"+room+"/"+user,
+				type: "PUT",
+				contentType: "application/json",
+				data: JSON.stringify({nom:$('#name').val()}),
+				success: function (data, textStatus, jqXHR) {
+					alert("add user to room' AuthorizedUser");
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					alert("Error add user to room' AuthorizedUser");
+			
+				}
+			});
+		   };
+
    $("#myform").bind("submit", function(evt) {
    
    	$('#allowedUsers :selected').each(function(i, selected){ 
@@ -76,6 +93,12 @@ $(document).ready(function(){
 				data: JSON.stringify({nom:$('#name').val()}),
 				success: function (data, textStatus, jqXHR) {
 					// do something with your data here.
+
+					$("#allowedUsers :selected").map(function(i, el) {
+		  				addUserToRoom($('#name').val(),$(el).val());
+    					//alert( $(el).val());
+					});
+
 					window.location.href = "/Rooms";
 				},
 				error: function (jqXHR, textStatus, errorThrown) {
@@ -83,6 +106,11 @@ $(document).ready(function(){
 			
 				}
 			});
+
+		  
+
+
+
 	  return false;
     });
 </script>

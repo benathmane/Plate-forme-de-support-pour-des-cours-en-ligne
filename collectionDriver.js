@@ -3,6 +3,11 @@ var ObjectID = require('mongodb').ObjectID;
 CollectionDriver = function(db) {
   this.db = db;
 };
+
+CollectionDriver.prototype.getThis = function(callback) {
+  callback(null, this);
+};
+
 /*This section defines a helper method getCollection to obtain a Mongo collection by name. You define class methods by adding functions to prototype.*/
 CollectionDriver.prototype.getCollection = function(collectionName, callback) {
   this.db.collection(collectionName, function(error, the_collection) {
@@ -59,8 +64,8 @@ CollectionDriver.prototype.updateUserRoom = function(collectionName, criterea,mo
         else {
      
 	        the_collection.update(
-          //{"name" : criterea},
-          {"_id" : ObjectID(criterea)},
+          {"name" : criterea},
+          //{"_id" : ObjectID(criterea)},
           {$push: { "rooms": modif } }
           , function(error,doc) { //C
             	if (error) callback(error)  
@@ -70,6 +75,23 @@ CollectionDriver.prototype.updateUserRoom = function(collectionName, criterea,mo
     });
 }
 
+//update a specific object
+CollectionDriver.prototype.updateRoomUser = function(collectionName, criterea,modif, callback) {
+    this.getCollection(collectionName, function(error, the_collection) {
+        if (error) callback(error)
+        else {
+     
+          the_collection.update(
+          {"nom" : criterea},
+          //{"_id" : ObjectID(criterea)},
+          {$push: { "autorizedUsers": modif } }
+          , function(error,doc) { //C
+              if (error) callback(error)  
+              callback(null, "room updated");            
+            });          
+        }
+    });
+}
 //delete a specific object
 CollectionDriver.prototype.delete = function(collectionName, entityId, callback) {
     this.getCollection(collectionName, function(error, the_collection) { //A
@@ -151,47 +173,44 @@ CollectionDriver.prototype.getAllUsers = function(collectionName,callback) { //A
 };
 
 
-/*
+
 //single item from a collection by its _id.
 CollectionDriver.prototype.getUsersRooms = function(collectionName,userIdentifier,callback) { //A
     
+
         this.getCollection(collectionName, function(error, the_collection) {   //A
         if  (error) callback(error)
         else {
-              the_collection.find({'name':userIdentifier}).toArray(function(error, results) { //B
-              if( error ) callback(error);
-              else {
+          console.log("******");
+              the_collection.find({'name':userIdentifier},{_id:false,rooms : true}).toArray(function(error, results) { //B
+              
+
+              /*var finalres;
+              results.forEach(function(room) { 
+               
+                finalres+=JSON.stringify(getRoomResources("Rooms",room,null));
+              });
+
+              */
+             
+              //if( error ) callback(error);
+              //else {
                 
-                  var strJson = "[";
-                  var intCount = results.length;
-                  if(intCount > 0){
-                    
-                            for(var i=0; i<intCount;i++){
-                              rooms = results[i].rooms;
-                              for(var j=0; i<rooms.length;j++){
-                                CollectionDriver.getCollection("Rooms", function(error, col) {
-                                  col.find({'nom':rooms[j]}).toArray(function(error, resRooms) {
-                                    strJson += resRooms;
-                                  });
-                                });
-                              }
-                                    
-                                
-                            }
-                    
-                  }
-                  strJson+=']';
                   
-                  callback("",strJson);
+                if( error ) callback(error);
+              else  {
+                callback(results);
+                console.log("*2**");
+              }
                  
-               }
+              //}
           });
         }
     });
 
 
 };
-*/
+
 
   
 
