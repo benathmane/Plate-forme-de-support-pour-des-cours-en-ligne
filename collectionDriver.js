@@ -174,33 +174,21 @@ CollectionDriver.prototype.getAllUsers = function(collectionName,callback) { //A
 
 
 
-//single item from a collection by its _id.
-CollectionDriver.prototype.getUsersRooms = function(collectionName,userIdentifier,callback) { //A
+//recherche des rooms associé à un autorizedUsers
+CollectionDriver.prototype.getUsersRooms = function(collectionName,userNom,callback) { //A
     
 
         this.getCollection(collectionName, function(error, the_collection) {   //A
         if  (error) callback(error)
         else {
-          console.log("******");
-              the_collection.find({'name':userIdentifier},{_id:false,rooms : true}).toArray(function(error, results) { //B
-              
-
-              /*var finalres;
-              results.forEach(function(room) { 
-               
-                finalres+=JSON.stringify(getRoomResources("Rooms",room,null));
-              });
-
-              */
-             
-              //if( error ) callback(error);
-              //else {
-                
+        
+              the_collection.find({'autorizedUsers':userNom }).toArray(function(error, results) { //B
                   
-                if( error ) callback(error);
+                if( error ){   console.log(error); callback(error);}
               else  {
-                callback(results);
-                console.log("*2**");
+			 
+                callback(null,results);
+               
               }
                  
               //}

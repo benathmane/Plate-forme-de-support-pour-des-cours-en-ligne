@@ -241,12 +241,21 @@ app.get('/:collection', function(req, res) { //A
    //console.log("------------------"+req.params.nom);
    //console.log(req.param('nom'));
    //app.use(express.session({secret: '1234567890QWERTY'}));
-
-    
-   //  if(req.param('nom')!=undefined) req.session.username = req.param('nom'); 
     if(req.param('nom')!=undefined) req.session.identifiant = req.param('nom');
-    //req.session.user = user;
-
+ if (req.params.collection=="Rooms"){
+ console.log("entreeRoom");
+ collectionDriver.getUsersRooms("Rooms",req.session.identifiant, function(error, objs) { //C
+         if (error) { res.send(400, error); } //D
+	      else { 
+	          if (req.accepts('html')) { //E
+    	          res.render('data',{objects: objs, collection: req.params.collection}); //F
+              } else {
+	          res.set('Content-Type','httpApplication/json'); //G
+                  res.send(200, objs); //H
+              }
+         }
+    });
+ }
    collectionDriver.findAll(req.params.collection, function(error, objs) { //C
     	  if (error) { res.send(400, error); } //D
 	      else { 
@@ -259,6 +268,7 @@ app.get('/:collection', function(req, res) { //A
          }
    	});
 });
+
 app.post('/:collection', function(req, res) { //A
     var object = req.body;
     var collection = req.params.collection;
@@ -302,6 +312,7 @@ app.get('/get/All/Users', function(req, res) { //A
          
     });
 });
+
 
 
 
