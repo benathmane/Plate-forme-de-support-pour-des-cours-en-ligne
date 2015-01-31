@@ -31,15 +31,13 @@
 							}
 
 							div#peerZone {
-										position: fixed;
-										left: 0%;
-										border: 1px solid #888;
-										color: #000;
-										padding: 10px;
-										width: 300px;
-										height:200px;
-										bottom:0px;
-										overflow: scroll;
+										border:1px solid gray;
+										position:absolute;
+										margin-left:-70px;
+										margin-top:5px;
+										height:280px;
+										width:470px;
+										overflow: auto;
 							}
 
 							div#righColumn {
@@ -64,13 +62,15 @@
 										margin: 5px;
 										width: 360px;
 							}
-							div#map
-							{
-										left:0px;
-										width:400px;
-										height:290px;
-										buttom:0px;
-										border:1px solid gray;
+							div#map{
+										position:absolute;
+										border: 1px solid #888;
+										color: #000;
+										padding: 10px;
+										width: 450px;
+										height:300px;
+										bottom:0px;
+										overflow: scroll;
 							}
 							div#drag{
 										border:1px solid gray;
@@ -97,7 +97,7 @@
 										font-size: 10px;
 										margin-left: 10px;
 							}
-							#data, #datasend, #afficher,#afficherSharing, #drop{
+							#data, #datasend, #afficher, #afficherSharingA, #drop{
 										-moz-border-radius: 5px;
 										-ms-border-radius: 5px;
 										-o-border-radius: 5px;
@@ -215,18 +215,20 @@
 				                padding:2em;
 				            }
 										#afficher{
+											width:120px;
 											position:absolute;
 											margin-top: -300px;
+											height:25px;
 										}
-										#afficherSharingP{
+										.menu{
 											position:absolute;
 											margin-top: -337px;
 											margin-left: 70px;
 										}
 										#afficherSharingA{
-											position:absolute;
-											margin-top: -337px;
-											margin-left: 194px;
+											margin-left: 280px;
+											width:120px;
+											height:25px;
 										}
         </style>
         
@@ -264,26 +266,32 @@
 						//var req = new XMLHttpRequest();
 						//var headers = req.getAllResponseHeaders().toLowerCase();
 						//alert(headers);
-
-
+						$("#map").hide();
+						$("#peerZone").hide();
 						//$("#chat").hide();
 						$("#afficher").click(function(){
 							if ($("#chat").is(":hidden")) {
-									$(this).next("#chat").slideToggle(600);
-									$("#afficher").prop('value', 'Chat (-)');
+									$(this).next("#chat").show();
+									$("#map").hide();
+									$("#afficher").prop('value', 'Localisation (+)');
 							} 
 							else {
-									$(this).next("#chat").slideToggle(600);
+									$(this).next("#chat").hide();
+									$("#map").show();
 									$("#afficher").prop('value', 'Chat (+)');
 							}
 						});
-						
-						$("#afficherSharingP").click(function(){
-								alert("afficherSharingA");
-							});
-							
 						$("#afficherSharingA").click(function(){
-								alert("afficherSharingA");
+							if ($("#drag").is(":hidden")) {
+								$("#drag").show();
+								$("#peerZone").hide();
+								$("#afficherSharingA").prop('value', 'Sharing Peer (+)');
+							}
+							else {
+								$("#drag").hide();
+								$("#peerZone").show();
+								$("#afficherSharingA").prop('value', 'Sharing  All (+)');
+							}	
 						});
 					})
 					</script>
@@ -320,6 +328,7 @@
 
             </script>
         </article>
+			
 				 <div id="drag">
 					<form id="upload" enctype="multipart/form-data">
 					<div id="drop-area">Glisser-déposer des fichiers</div>
@@ -334,7 +343,7 @@
 				<div class="container" id="con3" style="height:300px; width:300px; margin-left:auto; margin-right:auto;">
          	<video autoplay="autoplay" class="easyrtcMirror" class="callerVideo" id="selfVideo" style="height:500px; width:550px; " muted="muted" volume="0" ></video>
 				</div>
-					<input type="button" id="afficher" value="Chat (-)" />
+					<input type="button" id="afficher" value="Localisation (+)" />
 					
 					
 
@@ -366,13 +375,12 @@
             </div>
 						<!--<b><H2>My Localisation</h2></b>-->
 						<br/><br/>
-            <!--<div id="map"/>-->
+            <div id="map"></div>
 
-
-						<input type="button" id="afficherSharingA" value="Sharing All (-)" />
-            <input type="button" id="afficherSharingP" value="Sharing Peer (-)" />
-
-            <!--<div id="peerZone"></div>-->
+						<div class="menu">
+							<input type="button" id="afficherSharingA" value="Sharing Peer (+)" />
+						</class>
+            <div id="peerZone"></div>
 
 
     </body>
