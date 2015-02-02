@@ -68,7 +68,11 @@ function removeIfPresent(parent, childname) {
     }
 }
 
+function deconect(roomName){
 
+    easyrtc.leaveRoom(roomName, leaveSuccess(selfEasyrtcid), leaveFailure);
+    
+}
 
 function convertListToButtons(roomName, occupants, isPrimary) {
 	
@@ -335,7 +339,14 @@ function loginFailure(errorCode, message) {
     easyrtc.showError(errorCode, message);
 }
 
+function leaveSuccess(easyrtcid) {
+       console.log(easyrtcid + " is leaving ");
+}
 
+
+function leaveFailure(errorCode, message) {
+    easyrtc.showError(errorCode, message);
+}
 function performCall(otherEasyrtcid) {
     easyrtc.hangupAll();
     var successCB = function() {};

@@ -163,11 +163,12 @@ app.get('/createroom', function (req, res) {
 
 app.get('/joinRoom/:id', function (req, res) {
 	
-  var name = req.session.identifiant;
+   var name = req.session.identifiant;
    var nameR = req.params.id;
 
-  console.log(name);
-  //console.log("*************==="+name)
+   req.session.identifiant=null;
+  //console.log(name);
+console.log("*************==="+name)
   if(name!=undefined){
 
     //res.render('page', { title: 'Ninja Store - ' + name, username: req.session.username, content:contents[name] });
@@ -202,8 +203,8 @@ app.get('/joinRoom/:id', function (req, res) {
 
 
 app.get('/logout', function (req, res) {
-  app.set('identifiant',null);
   userconnectd=null;
+  req.session.identifiant=null;
   res.sendfile(__dirname + '/'+htmlDir+'/'+'index.html');
 });
 
@@ -212,6 +213,15 @@ app.get('/getConnectedUser', function(req, res) { //I
       res.send(''+userconnectd);
    
 });
+
+app.get('/clearConnectedUser', function(req, res) { //I
+    
+
+      userconnectd=null;
+      console.log("clear connected user ");
+   
+});
+
 
 //REST API
 app.get('/:collection/:entity', function(req, res) { //I

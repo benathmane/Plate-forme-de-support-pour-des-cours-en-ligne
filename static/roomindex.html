@@ -282,12 +282,17 @@
 								success: function (data, textStatus, jqXHR) {
 									
 			 							$("#me").html(data);
-					     	//name=data;
-					     	chat=new chat(data);
-                			chat.initializeSocket();
-                			chat.loadPage();
-								},
-								
+
+			 							document.cookie="name="+data;
+					     				name=data;
+					     				chat=new chat(data);
+                						chat.initializeSocket();
+                							chat.loadPage();
+										$.ajax({
+											url: "http://127.0.0.1:8088/clearConnectedUser",
+											type: "GET"	
+											});
+								}
 							});
 
 						 	
@@ -318,6 +323,12 @@
 								$("#peerZone").show();
 								$("#afficherSharingA").prop('value', 'Sharing  All (+)');
 							}	
+						});
+
+
+						$("#deconnect").click(function(){
+							deconect(document.URL.substring(1).split('/')[4]);
+							window.location.href = "/Rooms?nom="+name;
 						});
 					})
 					</script>
@@ -355,6 +366,8 @@
             </script>
         </article>
 			
+			<input type="button" id="deconnect" value="Leave Room"/>
+
 				 <div id="drag">
 					<form id="upload" enctype="multipart/form-data">
 					<div id="drop-area">Glisser-déposer des fichiers</div>

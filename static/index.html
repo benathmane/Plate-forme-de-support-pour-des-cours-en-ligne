@@ -20,8 +20,23 @@
 										+ $("#name").val() + "/"
 										+ $("#inputPassword").val(),
 								type : "GET",
-							
-								statusCode : 
+								
+								success: function(data, status, xhr) {
+       $("#formConnect").submit();
+    },
+    error: function(xhr, status, error) {
+        alert('User not found');
+    }
+
+								
+							});
+						}
+						);
+
+			});
+
+/*
+statusCode : 
 									{
 
 									212 : function() {
@@ -34,12 +49,8 @@
 									}
 								
 									
-								
-							});
-
-						});
-
-			});
+								}
+								*/
 </script>
 
 <header class="row page-header">
@@ -84,8 +95,8 @@
 			<div class="panel-footer">
 				<div class="form-group">
 					<div class="col-sm-offset-4 col-sm-10">
-						<button  class="btn btn-danger" id="sign">Sign
-							in</button>
+						<a  class="btn btn-danger" id="sign">Sign
+							in</a>
 					</div>
 				</div>
 			</div>
