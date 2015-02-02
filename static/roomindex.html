@@ -296,7 +296,7 @@
 						 	
 						$("#me").hide();
 						$("#chat").hide();
-						$("#peerZone").hide();
+						$("#drag").hide();
 
 						$("#afficher").click(function(){
 							if ($("#map").is(":hidden")) {
@@ -311,15 +311,15 @@
 							}
 						});
 						$("#afficherSharingA").click(function(){
-							if ($("#drag").is(":hidden")) {
-								$("#drag").show();
-								$("#peerZone").hide();
-								$("#afficherSharingA").prop('value', 'Sharing Peer (+)');
+							if ($("#peerZone").is(":hidden")) {
+								$("#peerZone").show();
+								$("#drag").hide();
+								$("#afficherSharingA").prop('value', 'Sharing All (+)');
 							}
 							else {
-								$("#drag").hide();
-								$("#peerZone").show();
-								$("#afficherSharingA").prop('value', 'Sharing  All (+)');
+								$("#peerZone").hide();
+								$("#drag").show();
+								$("#afficherSharingA").prop('value', 'Sharing  Peer (+)');
 							}	
 						});
 					})
