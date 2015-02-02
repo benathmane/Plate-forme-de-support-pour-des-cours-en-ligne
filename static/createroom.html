@@ -66,8 +66,12 @@
 								&nbsp;<select multiple class="form-control" id="allowedUsers" style="width:300px;"></select>
 						</div>
 						</div>
-						<center><input class="btn btn-danger" type="submit" id="roomSubmit" value="Submit" /></center>
+						<center><input class="btn btn-danger" type="submit" id="roomSubmit" value="Submit" />
+							<a href="/Rooms"><button type="button" class="btn btn-warning">Cancel</button></a> </center>
 					</form>
+
+
+					<a href="/logout"><button type="button" class="btn btn-warning">Cancel</button></a>
 				</section>
 				</div>
 			<!-- button -->
@@ -85,7 +89,7 @@
 				contentType: "application/json",
 				data: JSON.stringify({nom:$('#name').val()}),
 				success: function (data, textStatus, jqXHR) {
-					alert("add user to room' AuthorizedUser");
+					//alert("add user to room' AuthorizedUser");
 				},
 				error: function (jqXHR, textStatus, errorThrown) {
 					alert("Error add user to room' AuthorizedUser");
@@ -110,7 +114,7 @@
 				//	}
 				//	),
 				success: function (data, textStatus, jqXHR) {
-					alert("added room");
+					//alert("added room");
 				},
 				error: function (jqXHR, textStatus, errorThrown) {
 					alert("error add room");
@@ -123,7 +127,7 @@
 				url: "/Rooms",
 				type: "POST",
 				contentType: "application/json",
-				data: JSON.stringify({nom:$('#name').val()}),
+				data: JSON.stringify({name:$('#name').val(),connectedUser:0}),
 				success: function (data, textStatus, jqXHR) {
 					// do something with your data here.
 

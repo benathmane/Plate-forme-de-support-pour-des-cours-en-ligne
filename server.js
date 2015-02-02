@@ -184,12 +184,27 @@ app.get('/joinRoom/:id', function (req, res) {
           console.log("logsauvgardé");
      });
       userconnectd=name;
+
+       collectionDriver.updateRoomConnectedUSer("Rooms", nameR ,function(error, objs) { //J
+         console.log("*******************************Room count conne");
+      } );
+   
 	res.sendfile(__dirname + '/'+htmlDir+'/roomindex.html',{identifiant: ''+name});
+
+
+
   }
   else{
     //res.send(400, null);
     res.status(404).render('404', { title: 'File not Found'});
   }
+});
+
+
+app.get('/logout', function (req, res) {
+  app.set('identifiant',null);
+  userconnectd=null;
+  res.sendfile(__dirname + '/'+htmlDir+'/'+'index.html');
 });
 
 app.get('/getConnectedUser', function(req, res) { //I
@@ -245,7 +260,13 @@ app.get('/:collection', function(req, res) { //A
    //console.log("------------------"+req.params.nom);
    //console.log(req.param('nom'));
    //app.use(express.session({secret: '1234567890QWERTY'}));
+
+
+
     if(req.param('nom')!=undefined) req.session.identifiant = req.param('nom');
+
+    
+
  if (req.params.collection=="Rooms"){
  console.log("entreeRoom");
  collectionDriver.getUsersRooms("Rooms",req.session.identifiant, function(error, objs) { //C

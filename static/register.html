@@ -26,8 +26,15 @@
 		<br/><br/>
 		<div class="table table-hover">
 			<form id="contactform" class="form-horizontal" role="form">
+
 				<div class="form-group">
-					<label for="Name" class="col-sm-2 control-label">Name</label>
+					<label for="Name" class="col-sm-2 control-label">Identifiant</label>
+					<div class="col-sm-10">
+						<input id="identifiant" name="identifiant" class="form-control" placeholder="Identifiant" required="" tabindex="1" type="text">  
+					</div>			
+				</div>
+				<div class="form-group">
+					<label for="Name" class="col-sm-2 control-label">First and last name</label>
 					<div class="col-sm-10">
 						<input id="name" name="name" class="form-control" placeholder="First and last name" required="" tabindex="1" type="text">  
 					</div>			
@@ -35,16 +42,11 @@
 				<div class="form-group">
 					<label for="Email" class="col-sm-2 control-label">Email address</label>
 						<div class="col-sm-10">
-							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+							<input type="email" class="form-control" id="email" placeholder="Enter email">
 						</div>
 				</div>
 				
-				<div class="form-group">
-					<label for="Create a username" class="col-sm-2 control-label">User name</label>
-						<div class="col-sm-10">
-							<input id="username" class="form-control" name="username" placeholder="username" required="" tabindex="2" type="text">
-						</div>
-				</div>
+				
 				
 				<div class="form-group">
 					<label for="Create a password" class="col-sm-2 control-label">Password</label>
@@ -63,7 +65,7 @@
 					<div class="form-group">
 					<label for="month" class="col-sm-2 control-label">month</label>
 						<div class="col-sm-10">
-							<select class="form-control" name="BirthMonth" >
+							<select class="form-control" name="BirthMonth" id="month">
 								 <option value="">Month</option>
 												<option  value="01">January</option>
 												<option value="02">February</option>
@@ -100,6 +102,9 @@
 				<br/>
 				<br/>
 			</form>
+
+
+			
 		</div>
 	</div>
 </div>
@@ -110,7 +115,17 @@
 		url: "/Users",
 		type: "POST",
 		contentType: "application/json",
-		data: JSON.stringify({name:$('#name').val()}),
+		data: JSON.stringify({Identifiant:$('#Identifiant').val(),
+			name:$('#name').val(),
+			email:$('#email').val()
+			,password:$('#password').val()
+			,phone:$('#phone').val(),
+			month:$('#month').val(),
+			day:$('#day').val(),
+				year:$('#year').val()
+
+
+	}),
 		success: function (data, textStatus, jqXHR) {
 			// do something with your data here.
 			window.location.href = "/";

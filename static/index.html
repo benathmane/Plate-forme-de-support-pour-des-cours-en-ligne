@@ -20,17 +20,21 @@
 										+ $("#name").val() + "/"
 										+ $("#inputPassword").val(),
 								type : "GET",
-								statusCode : {
+							
+								statusCode : 
+									{
 
 									212 : function() {
-
 										$("#formConnect").submit();
+										
 										//$(location).attr('href',"http://127.0.0.1:8088/Rooms");
 									},
 									400 : function() {
 										alert("User not found");
 									}
-								}
+								
+									
+								
 							});
 
 						});
@@ -80,7 +84,7 @@
 			<div class="panel-footer">
 				<div class="form-group">
 					<div class="col-sm-offset-4 col-sm-10">
-						<button type="submit" class="btn btn-danger" id="sign">Sign
+						<button  class="btn btn-danger" id="sign">Sign
 							in</button>
 					</div>
 				</div>

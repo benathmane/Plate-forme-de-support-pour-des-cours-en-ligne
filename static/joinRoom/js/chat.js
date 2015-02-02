@@ -17,7 +17,7 @@ function myFunction() {
     return h + ":" + m + ":" + s;
 }
 
-function chat(){
+function chat(name){
     this.initializeSocket=function(){
 
         socket = io.connect('/');
@@ -26,7 +26,7 @@ function chat(){
         // on connection to server, ask for user's name with an anonymous callback
         socket.on('connect', function(){
             // call the server-side function 'adduser' and send one parameter (value of prompt)
-            socket.emit('adduser', "Ayoub");
+            socket.emit('adduser', name);
             //charge la map
             $.getScript( "js/map.js" )
                 .done(function( script, textStatus ) {

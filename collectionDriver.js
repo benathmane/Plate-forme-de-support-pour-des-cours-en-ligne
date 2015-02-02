@@ -93,7 +93,7 @@ CollectionDriver.prototype.updateRoomUser = function(collectionName, criterea,mo
         else {
      
           the_collection.update(
-          {"nom" : criterea},
+          {"name" : criterea},
           //{"_id" : ObjectID(criterea)},
           {$push: { "autorizedUsers": modif } }
           , function(error,doc) { //C
@@ -103,6 +103,29 @@ CollectionDriver.prototype.updateRoomUser = function(collectionName, criterea,mo
         }
     });
 }
+
+//update a specific object
+CollectionDriver.prototype.updateRoomConnectedUSer = function(collectionName, criterea, callback) {
+    this.getCollection(collectionName, function(error, the_collection) {
+        if (error) callback(error)
+        else {
+          console.log("--------------------------------------------------21");
+     console.log("--------------------------------------------------"+criterea);
+          the_collection.update(
+          //{"name" : criterea},
+          {"_id" : ObjectID(criterea)},
+          {$inc: { "connectedUser": 1 } }
+          , function(error,doc) { //C
+              if (error) callback(error)  ;
+
+              callback(null, "room updated");            
+            }
+            );          
+        }
+    });
+}
+
+
 //delete a specific object
 CollectionDriver.prototype.delete = function(collectionName, entityId, callback) {
     this.getCollection(collectionName, function(error, the_collection) { //A
@@ -124,7 +147,7 @@ CollectionDriver.prototype.getRoomResources = function(collectionName, roomId, c
     this.getCollection(collectionName, function(error, the_collection) { //A
         if (error) callback(error)
         else {
-            the_collection.find({'nom':roomId}).toArray(function(error, results) { //B
+            the_collection.find({'name':roomId}).toArray(function(error, results) { //B
           if( error ) callback(error);
           else callback(null, results);
         });
@@ -148,6 +171,20 @@ CollectionDriver.prototype.getUserByNamePassword = function(collectionName, name
 
 };
 
+CollectionDriver.prototype.getUserByName = function(collectionName, name, callback) { //A
+    
+            this.getCollection(collectionName, function(error, the_collection) { //A
+        if (error) callback(error)
+        else {
+            the_collection.find({'name':name}).toArray(function(error, results) { //B
+          if( error ) callback(error);
+          else callback(null, results);
+        });
+      }
+    });
+
+
+};
 //single item from a collection by its _id.
 CollectionDriver.prototype.getAllUsers = function(collectionName,callback) { //A
     
