@@ -2,20 +2,36 @@ html
   head
     style
       include bootstrap.min.css
+header(class="row page-header")
+  hgroup
+    h1(class="text-center")
+      p='Client Server Side Project'
+      small
+        p='A platform online courses'
 body
-    h1= collection
-    #objects
-        table(class=".table table-striped", style='width: 100%')
-          if objects.length > 0
-              - each val, key in objects[0]
-                  th= key 
-          - each obj in objects
-            tr.obj(class="active")
-              - each val, key in obj
-                td.key= val
-              td 
-                a(href='/joinRoom/'+ obj._id) #{'join'}
-    br
-    br
-    a(href='/createroom') #{'create'}
-    a(href='/logout') #{'logout'}
+  div(class="container")
+    div(class="panel panel-primary")
+      div(class="panel-heading text-center text-capitalize")
+        h3(class="panel-title")
+          strong=collection
+      div(class="table table-hover")
+        #objects
+          table(class="table table-hover", style='width: 100%')
+            if objects.length > 0
+                - each val, key in objects[0]
+                    th= key 
+            - each obj in objects
+              thead
+                tr.obj(class="active")
+              tbody
+                - each val, key in obj
+                  td.key= val
+                td 
+                  a(href='/joinRoom/'+ obj._id)
+                    button(type="button", class="btn-primary") #{'join'}
+      center
+        a(href='/createroom')
+          button(type="button", class="btn-warning") #{'create'}
+        &nbsp;&nbsp;
+        a(href='/logout')
+          button(type="button", class="btn-danger") #{'logout'}

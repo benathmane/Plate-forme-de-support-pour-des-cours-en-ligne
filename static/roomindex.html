@@ -122,7 +122,7 @@
 							#listofUsers{
 										border-left: 1px solid rgba(0, 0, 0, 0.4);
 										box-shadow: 2px 0 2px -2px #B2B9C9 inset;
-										background-image:url(../img/bg1.gif);
+										background-image:url(../img/irongrip.png);
 										background-repeat: repeat;
 										color: #333333;
 										display: block;
@@ -230,6 +230,9 @@
 											width:120px;
 											height:25px;
 										}
+								#users{
+									color: white;
+								}
         </style>
         
         <!-- scripts used for video-conferencing -->
@@ -275,7 +278,7 @@
 								//alert(document.URL.substring(1).split('/')[5]);
 									//alert(getConnectedUser());
 						//$("#chat").hide();
- var name;
+						var name;
 						$.ajax({
 								url: "http://127.0.0.1:8088/getConnectedUser",
 								type: "GET",
@@ -291,20 +294,20 @@
 							});
 
 						 	
-
-						$("#map").hide();
+						$("#me").hide();
+						$("#chat").hide();
 						$("#peerZone").hide();
 
 						$("#afficher").click(function(){
-							if ($("#chat").is(":hidden")) {
-									$(this).next("#chat").show();
-									$("#map").hide();
-									$("#afficher").prop('value', 'Localisation (+)');
+							if ($("#map").is(":hidden")) {
+									$("#map").show();
+									$("#chat").hide();
+									$("#afficher").prop('value', 'Chat (+)');
 							} 
 							else {
-									$(this).next("#chat").hide();
-									$("#map").show();
-									$("#afficher").prop('value', 'Chat (+)');
+									$("#map").hide();
+									$("#chat").show();
+									$("#afficher").prop('value', 'Localisation (+)');
 							}
 						});
 						$("#afficherSharingA").click(function(){
@@ -385,11 +388,11 @@
 				
         
             <div id="listofUsers">
-                <b><H2><center>USERS</center></h2></b>
+                <b><H2><center><font color="white">USERS</font></center></h2></b>
 								<div class="profiles">
 									<div id="users"></div>
 								</div><br/>
-							<div id="iam">Not yet connected...</div>
+							<!--<div id="iam">Not yet connected...</div>-->
 							
 
 							<div id="me">.</div>
