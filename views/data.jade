@@ -27,8 +27,9 @@ body
                 - each val, key in obj
                   td.key= val
                 td 
-                  a(href='/joinRoom/'+ obj._id)
-                    button(type="button", class="btn-primary") #{'join'}
+                 if key == connectedUser && obj.connectedUser <4
+                   a(href='/joinRoom/'+ obj._id) 
+                     button(type="button", class="btn-primary") #{'join '}
       center
         a(href='/createroom')
           button(type="button", class="btn-warning") #{'create'}

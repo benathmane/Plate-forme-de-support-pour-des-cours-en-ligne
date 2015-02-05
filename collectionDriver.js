@@ -125,6 +125,25 @@ CollectionDriver.prototype.updateRoomConnectedUSer = function(collectionName, cr
     });
 }
 
+//update a specific object
+CollectionDriver.prototype.updateleaveRoomConnectedUSer = function(collectionName, criterea, callback) {
+    this.getCollection(collectionName, function(error, the_collection) {
+        if (error) callback(error)
+        else {
+      
+          the_collection.update(
+          //{"name" : criterea},
+          {"_id" : ObjectID(criterea)},
+          {$inc: { "connectedUser": -1 } }
+          , function(error,doc) { //C
+              if (error) callback(error)  ;
+
+              callback(null, "room updated");            
+            }
+            );          
+        }
+    });
+}
 
 //delete a specific object
 CollectionDriver.prototype.delete = function(collectionName, entityId, callback) {

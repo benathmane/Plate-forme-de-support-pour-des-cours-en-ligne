@@ -375,3 +375,15 @@ console.log("--------------");
     });
 });
 */
+
+
+app.post('/update/leave/Room/ConnectedUSer/:roomid', function(req, res) { //A
+    //var object = req.body;
+    var roomid = req.params.roomid;
+   
+
+    collectionDriver.updateleaveRoomConnectedUSer("Rooms", roomid, function(err,docs) {
+          if (err) { res.send(400, err); } 
+          else { res.send(201, docs); } //B
+     });
+});

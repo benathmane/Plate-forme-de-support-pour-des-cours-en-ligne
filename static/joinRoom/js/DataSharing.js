@@ -7,11 +7,10 @@ var maxCALLERS = 3;
 
 function connectData(roomName) {
 	//var otherClientsDiv = document.getElementById('otherClients');
-   
     easyrtc.enableDataChannels(true);
   //easyrtc.enableVideo(true);
   // easyrtc.enableAudio(true);	
-	easyrtc.setVideoDims(640,480);
+	easyrtc.setVideoDims(800,600);
    // easyrtc.setRoomOccupantListener(callEverybodyElse(roomName));
 	
 
@@ -70,7 +69,10 @@ function removeIfPresent(parent, childname) {
 
 function deconect(roomName){
 
-    easyrtc.leaveRoom(roomName, leaveSuccess(selfEasyrtcid), leaveFailure);
+    easyrtc.leaveRoom(roomName, leaveSuccess(selfEasyrtcid,roomName), leaveFailure);
+
+    
+
     
 }
 
@@ -339,7 +341,22 @@ function loginFailure(errorCode, message) {
     easyrtc.showError(errorCode, message);
 }
 
-function leaveSuccess(easyrtcid) {
+function leaveSuccess(easyrtcid,roomName) {
+
+     console.log("-------------------------------------------------------------roomName-");
+    $.ajax({
+        url: "/update/leave/Room/ConnectedUSer/"+roomName,
+        type: "POST",
+        contentType: "application/json",
+        //data: JSON.stringify({rtcId: selfEasyrtcid}),
+        success: function (data, textStatus, jqXHR) {
+            console.log("connected user --");
+        },
+        error: function (jqXHR, textStatus, errorThrown) {  
+            console.log("error connected user --")        
+        }
+    });
+
        console.log(easyrtcid + " is leaving ");
 }
 
