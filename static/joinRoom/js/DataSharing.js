@@ -6,17 +6,9 @@ var maxCALLERS = 3;
 
 
 function connectData(roomName) {
-	//var otherClientsDiv = document.getElementById('otherClients');
-    easyrtc.enableDataChannels(true);
-  //easyrtc.enableVideo(true);
-  // easyrtc.enableAudio(true);	
+	  easyrtc.enableDataChannels(true);
 	easyrtc.setVideoDims(800,600);
-   // easyrtc.setRoomOccupantListener(callEverybodyElse(roomName));
-	
-
-
-
- 	easyrtc.easyApp("easyrtc.webProject", "selfVideo", ["callerVideo1","callerVideo2","callerVideo3"],  loginSuccess,loginFailure);
+  easyrtc.easyApp("easyrtc.webProject", "selfVideo", ["callerVideo1","callerVideo2","callerVideo3"],  loginSuccess,loginFailure);
 
     easyrtc.joinRoom(roomName, null, loginSuccess,loginFailure);
     
@@ -53,7 +45,6 @@ function connectData(roomName) {
     });
 	
 
-    //easyrtc.connect("easyrtc.audioVideoSimple", loginSuccess, loginFailure);
 }
 
 
@@ -81,18 +72,13 @@ function convertListToButtons(roomName, occupants, isPrimary) {
 	  console.log("roomName="  + roomName );
 
     console.log("callEverybodyElse count="  + easyrtc.getConnectionCount() );
-   // easyrtc.setRoomOccupantListener(null); // so we're only called once.
-    var list = [];
+   var list = [];
     var connectCount = 0;
     for(var easyrtcid in occupants ) {
         list.push(easyrtcid);
     }
 	console.log("list="  + list );
-    //
-    // Connect in reverse order. Latter arriving people are more likely to have
-    // empty slots.
-    //
-    function establishConnection(position) {
+     function establishConnection(position) {
         function callSuccess() {
             connectCount++;
             if( connectCount < maxCALLERS && position > 0) {
@@ -185,19 +171,13 @@ function convertListToButtons(roomName, occupants, isPrimary) {
         }
 
 
-        var noDCs = {}; // which users don't support data channels
+        var noDCs = {}; 
 
         var fileSender = null;
         function filesHandler(files) {
-            // if we haven't eastablished a connection to the other party yet, do so now,
-            // and on completion, send the files. Otherwise send the files now.
-            var timer = null;
+             var timer = null;
             if (easyrtc.getConnectStatus(easyrtcid) === easyrtc.NOT_CONNECTED && noDCs[easyrtcid] === undefined) {
-                //
-                // calls between firefrox and chrome ( version 30) have problems one way if you
-                // use data channels.
-                //
-
+      
             }
             else if (easyrtc.getConnectStatus(easyrtcid) === easyrtc.IS_CONNECTED || noDCs[easyrtcid]) {
                 if (!fileSender) {
@@ -251,9 +231,6 @@ function acceptRejectCB(otherGuy, fileNameList, wasAccepted) {
     jQuery(receiveBlock).empty();
     receiveBlock.style.display = "inline-block";
 
-    //
-    // list the files being offered
-    //
     receiveBlock.appendChild(document.createTextNode("Files offered"));
     receiveBlock.appendChild(document.createElement("br"));
     for (var i = 0; i < fileNameList.length; i++) {
@@ -261,10 +238,7 @@ function acceptRejectCB(otherGuy, fileNameList, wasAccepted) {
                 document.createTextNode("  " + fileNameList[i].name + "(" + fileNameList[i].size + " bytes)"));
         receiveBlock.appendChild(document.createElement("br"));
     }
-    //
-    // provide accept/reject buttons
-    //
-    var button = document.createElement("button");
+     var button = document.createElement("button");
     button.appendChild(document.createTextNode("Accept"));
     button.onclick = function() {
         jQuery(receiveBlock).empty();
@@ -316,8 +290,7 @@ function blobAcceptor(otherGuy, blob, filename) {
 
 function loginSuccess(easyrtcid) {
     selfEasyrtcid = easyrtcid;
-    //document.getElementById("iam").innerHTML = "I am " + easyrtcid;
-	document.getElementById("iam").innerHTML = "I am " + easyrtc.cleanId(easyrtcid);
+  document.getElementById("iam").innerHTML = "I am " + easyrtc.cleanId(easyrtcid);
 	
 	
 	$.ajax({
@@ -343,12 +316,11 @@ function loginFailure(errorCode, message) {
 
 function leaveSuccess(easyrtcid,roomName) {
 
-     console.log("-------------------------------------------------------------roomName-");
+     console.log("leaveSuccess roomName="+roomName);
     $.ajax({
         url: "/update/leave/Room/ConnectedUSer/"+roomName,
         type: "POST",
         contentType: "application/json",
-        //data: JSON.stringify({rtcId: selfEasyrtcid}),
         success: function (data, textStatus, jqXHR) {
             console.log("connected user --");
         },

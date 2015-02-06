@@ -4,19 +4,18 @@ var static  = require('node-static');
 var easyrtc = require("easyrtc");
 var routes = require('./routes');   
 var app = express();
-var http    = require("http");              // http server core module
-var express = require("express");           // web framework external module
-var io      = require("socket.io");         // web socket external module
+var http    = require("http");              
+var express = require("express");           
+var io      = require("socket.io");         
 var bodyParser = require('body-parser');
 var path = require('path');
 var MongoClient = require('mongodb').MongoClient;
 var Server = require('mongodb').Server;
 CollectionDriver = require('./collectionDriver').CollectionDriver;
-var mongoHost = 'localHost'; //A
+var mongoHost = 'localHost';
 var mongoPort = 27017; 
 var collectionDriver;
-var mongoClient = new MongoClient(new Server(mongoHost, mongoPort)); //B
-/* app.use(bodyParser.urlencoded({ extended: true }));*/
+var mongoClient = new MongoClient(new Server(mongoHost, mongoPort)); 
 app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -78,31 +77,21 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('sendchat', function (data) {
-		// we tell the client to execute 'updatechat' with 2 parameters
 		io.sockets.emit('updatechat', socket.username, data);
 	});
 
 	socket.on('adduser', function(username){
-		// we store the username in the socket session for this client
 		socket.username = username;
 		socket.emit()
-		// add the client's username to the global list
 		usernames[username] = username;
-		// echo to client they've connected
 		socket.emit('updatechat', 'SERVER', 'you have connected');
-		// echo globally (all clients) that a person has connected
 		socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
-		// update the list of users in chat, client-side
 		io.sockets.emit('updateusers', usernames);
 	});
 
-	// when the user disconnects.. perform this
 	socket.on('disconnect', function(){
-		// remove the username from global usernames list
 		delete usernames[socket.username];
-		// update list of users in chat, client-side
 		io.sockets.emit('updateusers', usernames);
-		// echo globally that this client has left
 		socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
 	});
 
@@ -127,7 +116,6 @@ function onNewNamespace(channel, sender) {
             io.isConnected = false;
             socket.emit('connect', true);
         }
-
         socket.on('message', function (data) {
             if (data.sender == sender)
                 socket.broadcast.emit('message', data.data);
@@ -137,15 +125,15 @@ function onNewNamespace(channel, sender) {
 
 
 //OPEN Connection to MongoDB
-mongoClient.open(function(err, mongoClient) { //C
+mongoClient.open(function(err, mongoClient) { 
   if (!mongoClient) {
       console.error("Error! Exiting... Must start MongoDB first");
-      process.exit(1); //D
+      process.exit(1); 
   }
-    var db = mongoClient.db("MyDatabase");  //E
+    var db = mongoClient.db("MyDatabase");  
 
     // ADD TEST DATA
-    collectionDriver = new CollectionDriver(db); //F
+    collectionDriver = new CollectionDriver(db); 
     var obj1={ "name" : "AHMED",
     "email": "ahmed@polytech.com",
     "password": "AHMED",
@@ -224,36 +212,22 @@ app.get('/joinRoom/:id', function (req, res) {
    var nameR = req.params.id;
 
    req.session.identifiant=null;
-  //console.log(name);
-console.log("*************==="+name)
-  if(name!=undefined){
-
-    //res.render('page', { title: 'Ninja Store - ' + name, username: req.session.username, content:contents[name] });
-    /*
-     var options = {
-      headers: {
-        'identifiant':name
-        }
-      };
-      */
-      app.set('identifiant',name);
+   if(name!=undefined){
+     app.set('identifiant',name);
       var log={name: name, room: nameR};
 	   collectionDriver.save('Logs', log, function(err,docs) {
-          console.log("logsauvgardé");
+          console.log("log sauvgardé");
      });
       userconnectd=name;
 
-       collectionDriver.updateRoomConnectedUSer("Rooms", nameR ,function(error, objs) { //J
-         console.log("*******************************Room count conne");
+       collectionDriver.updateRoomConnectedUSer("Rooms", nameR ,function(error, objs) { 
+         console.log("Room count conne");
       } );
    
 	res.sendfile(__dirname + '/'+htmlDir+'/roomindex.html',{identifiant: ''+name});
 
-
-
   }
   else{
-    //res.send(400, null);
     res.status(404).render('404', { title: 'File not Found'});
   }
 });
@@ -265,45 +239,42 @@ app.get('/logout', function (req, res) {
   res.sendfile(__dirname + '/'+htmlDir+'/'+'index.html');
 });
 
-app.get('/getConnectedUser', function(req, res) { //I
-  
-      res.send(''+userconnectd);
+app.get('/getConnectedUser', function(req, res) { 
+    res.send(''+userconnectd);
    
 });
 
-app.get('/clearConnectedUser', function(req, res) { //I
-    
-
-      userconnectd=null;
+app.get('/clearConnectedUser', function(req, res) { 
+       userconnectd=null;
       console.log("clear connected user ");
    
 });
 
 
 //REST API
-app.get('/:collection/:entity', function(req, res) { //I
+app.get('/:collection/:entity', function(req, res) { 
    var params = req.params;
    var entity = params.entity;
    var collection = params.collection;
    console.log (entity);
    if (entity) {
-       collectionDriver.get(collection, entity, function(error, objs) { //J
+       collectionDriver.get(collection, entity, function(error, objs) { 
           if (error) { res.send(400, error); }
           else { res.send(200, objs); 
-		  //res.redirect('/index');
-		  } //K
+		 
+		  } 
        });
    } else {
       res.send(400, {error: 'bad url', url: req.url});
    }
 });
 
-app.get('/user/:name/:password', function(req, res) { //I
+app.get('/user/:name/:password', function(req, res) { 
    var params = req.params;
   
    var name = params.name;
    var password = params.password;
-   collectionDriver.getUserByNamePassword("Users", name ,password, function(error, objs) { //J
+   collectionDriver.getUserByNamePassword("Users", name ,password, function(error, objs) { 
    
    if (error) { 
           res.send(400, error);
@@ -311,8 +282,7 @@ app.get('/user/:name/:password', function(req, res) { //I
      else {  
       if (JSON.stringify(objs) === '[]') {
           res.send(400, error);
-       }else{
-          // res.send(JSON.stringify(objs));
+       }else{         
           res.send(212, error);
        }
            
@@ -322,83 +292,75 @@ app.get('/user/:name/:password', function(req, res) { //I
    
 });
 
-app.get('/:collection', function(req, res) { //A
-   var params = req.params; //B
-   //console.log("------------------"+req.params.nom);
-   //console.log(req.param('nom'));
-   //app.use(express.session({secret: '1234567890QWERTY'}));
-
-
-
-    if(req.param('nom')!=undefined) req.session.identifiant = req.param('nom');
-
-    
+app.get('/:collection', function(req, res) { 
+   var params = req.params; 
+  if(req.param('nom')!=undefined) req.session.identifiant = req.param('nom');
 
  if (req.params.collection=="Rooms"){
- console.log("entreeRoom");
- collectionDriver.getUsersRooms("Rooms",req.session.identifiant, function(error, objs) { //C
-         if (error) { res.send(400, error); } //D
+  console.log("entree Room");
+   collectionDriver.getUsersRooms("Rooms",req.session.identifiant, function(error, objs) {
+         if (error) { res.send(400, error); } 
 	      else { 
-	          if (req.accepts('html')) { //E
-    	          res.render('data',{objects: objs, collection: req.params.collection}); //F
+	          if (req.accepts('html')) { 
+    	          res.render('data',{objects: objs, collection: req.params.collection}); 
               } else {
-	          res.set('Content-Type','httpApplication/json'); //G
-                  res.send(200, objs); //H
+	          res.set('Content-Type','httpApplication/json'); 
+                  res.send(200, objs); 
               }
          }
     });
  }
-   collectionDriver.findAll(req.params.collection, function(error, objs) { //C
-    	  if (error) { res.send(400, error); } //D
+   collectionDriver.findAll(req.params.collection, function(error, objs) { 
+    	  if (error) { res.send(400, error); } 
 	      else { 
-	          if (req.accepts('html')) { //E
-    	          res.render('data',{objects: objs, collection: req.params.collection}); //F
+	          if (req.accepts('html')) { 
+    	          res.render('data',{objects: objs, collection: req.params.collection}); 
               } else {
-	          res.set('Content-Type','httpApplication/json'); //G
-                  res.send(200, objs); //H
+	          res.set('Content-Type','httpApplication/json'); 
+                  res.send(200, objs); 
               }
          }
    	});
 });
 
-app.post('/:collection', function(req, res) { //A
+app.post('/:collection', function(req, res) { 
     var object = req.body;
     var collection = req.params.collection;
 	console.log(collection);
 	console.log(object);
     collectionDriver.save(collection, object, function(err,docs) {
           if (err) { res.send(400, err); } 
-          else { res.send(201, docs); } //B
+          else { res.send(201, docs); } 
      });
 });
  
- app.put('/Users/update/:creterea/:query', function(req, res) { //A
+ app.put('/Users/update/:creterea/:query', function(req, res) { 
     var creterea = req.params.creterea;
      var query = req.params.query;
     var collection = req.params.collection;
     
     collectionDriver.updateUserRoom("Users", creterea,query, function(err,docs) {
           if (err) { res.send(400, err); } 
-          else { res.send(201, docs); } //B
+          else { res.send(201, docs); } 
      });
 });
 
-app.put('/Rooms/update/:creterea/:query', function(req, res) { //A
+app.put('/Rooms/update/:creterea/:query', function(req, res) { 
     var creterea = req.params.creterea;
      var query = req.params.query;
     var collection = req.params.collection;
     
     collectionDriver.updateRoomUser("Rooms", creterea,query, function(err,docs) {
           if (err) { res.send(400, err); } 
-          else { res.send(201, docs); } //B
+          else { res.send(201, docs); } 
      });
 });
-app.get('/get/All/Users', function(req, res) { //A
-   var params = req.params; //B
-   collectionDriver.getAllUsers("Users", function(error, objs) { //C
-        if (error) { res.send(400, error); } //D
+app.get('/get/All/Users', function(req, res) { 
+   var params = req.params; 
+   collectionDriver.getAllUsers("Users", function(error, objs) { 
+        if (error) { res.send(400, error); } 
         else {
-           res.set('Content-Type','Application/json'); //G
+           res.set('Content-Type','Application/json'); 
                   res.send(JSON.stringify(objs));
             }
          
@@ -407,40 +369,12 @@ app.get('/get/All/Users', function(req, res) { //A
 
 
 
-
-/*
-Code to get rooms of the passed user ==> Not working
-
-
-app.get('/get/All/User/Room/:iduser', function(req, res) { //A
-   //var params = req.params; //B
-
-console.log("--------------");
-
-   collectionDriver.getUsersRooms("Users",req.params.iduser, function(error, objs) { //C
-        if (error) { res.send(400, error); } //D
-        else {
-                console.log("-----qq---------");
-                
-                for( var i = 0; i < JSON.stringify(objs).length; i++) {
-                  console.log(JSON.stringify(objs)[i]);
-                }
-         
-                 res.send(JSON.stringify(objs));
-            }
-         
-    });
-});
-*/
-
-
-app.post('/update/leave/Room/ConnectedUSer/:roomid', function(req, res) { //A
-    //var object = req.body;
-    var roomid = req.params.roomid;
+app.post('/update/leave/Room/ConnectedUSer/:roomid', function(req, res) { 
+     var roomid = req.params.roomid;
    
 
     collectionDriver.updateleaveRoomConnectedUSer("Rooms", roomid, function(err,docs) {
           if (err) { res.send(400, err); } 
-          else { res.send(201, docs); } //B
+          else { res.send(201, docs); }
      });
 });

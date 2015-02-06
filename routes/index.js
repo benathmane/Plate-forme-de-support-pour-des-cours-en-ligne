@@ -6,10 +6,7 @@ var fileList = []
   , filesBasePath = './files'
   , maxFileSize = Math.pow(2, 30) * 1
 
-/**
- * Lecture de la liste des fichiers.
- * Les fichiers inexistant sont supprimés de la liste.
- */
+
 function updateFileList()
 {
   if (!fs.existsSync(fileListPath))

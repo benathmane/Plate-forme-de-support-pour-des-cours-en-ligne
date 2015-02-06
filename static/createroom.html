@@ -101,20 +101,12 @@
    $("#myform").bind("submit", function(evt) {
    
    	$('#allowedUsers :selected').each(function(i, selected){ 
-  				//alert( $(selected).val()); 
   				
   				 $.ajax({
 				url: "Users/update/"+$(selected).val()+"/"+$('#name').val(),
 				type: "PUT",
 				contentType: "application/json",
-				//data: JSON.stringify(
-				//	{
-				//		_id:"54cb5afbc90c8961aafd01c1",
-				///		$push: { rooms: 20 } 
-				//	}
-				//	),
 				success: function (data, textStatus, jqXHR) {
-					//alert("added room");
 				},
 				error: function (jqXHR, textStatus, errorThrown) {
 					alert("error add room");
@@ -129,18 +121,14 @@
 				contentType: "application/json",
 				data: JSON.stringify({name:$('#name').val(),connectedUser:0}),
 				success: function (data, textStatus, jqXHR) {
-					// do something with your data here.
-
 					$("#allowedUsers :selected").map(function(i, el) {
 		  				addUserToRoom($('#name').val(),$(el).val());
-    					//alert( $(el).val());
-					});
+    					});
 
 					window.location.href = "/Rooms";
 				},
 				error: function (jqXHR, textStatus, errorThrown) {
-					// likewise do something with your error here.
-			
+				
 				}
 			});
 

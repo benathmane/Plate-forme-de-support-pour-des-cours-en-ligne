@@ -1,5 +1,4 @@
 var ObjectID = require('mongodb').ObjectID;
-/*This function defines the CollectionDriver constructor method; it stores a MongoDB client instance for later use.*/
 CollectionDriver = function(db) {
   this.db = db;
 };
@@ -8,7 +7,6 @@ CollectionDriver.prototype.getThis = function(callback) {
   callback(null, this);
 };
 
-/*This section defines a helper method getCollection to obtain a Mongo collection by name. You define class methods by adding functions to prototype.*/
 CollectionDriver.prototype.getCollection = function(collectionName, callback) {
   this.db.collection(collectionName, function(error, the_collection) {
     if( error ) callback(error);
@@ -16,36 +14,25 @@ CollectionDriver.prototype.getCollection = function(collectionName, callback) {
   });
 };
 
-/*This section defines a helper method getCollection to obtain a Mongo collection by name. You define class methods by adding functions to prototype.*/
-/*CollectionDriver.prototype.postLogs = function(collectionName,rooms,user, callback) {
-  this.db.collection(collectionName, function(error, the_collection) {
-    if( error ) callback(error);
-   else{
-      the_collection.push()
-  });
-};
-*/
 
-//appele la collection en A et renvoie tous les objets trouvés en B
 CollectionDriver.prototype.findAll = function(collectionName, callback) {
-    this.getCollection(collectionName, function(error, the_collection) { //A
+    this.getCollection(collectionName, function(error, the_collection) { 
       if( error ) callback(error);
       else {
-        the_collection.find().toArray(function(error, results) { //B
+        the_collection.find().toArray(function(error, results) { 
           if( error ) callback(error);
           else callback(null, results);
         });
       }
     });
 };
-//single item from a collection by its _id.
-CollectionDriver.prototype.get = function(collectionName, id, callback) { //A
+CollectionDriver.prototype.get = function(collectionName, id, callback) { 
     this.getCollection(collectionName, function(error, the_collection) {
         if (error) callback(error);
         else {
-            var checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$"); //B
+            var checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$"); 
             if (!checkForHexRegExp.test(id)) callback({error: "invalid id"});
-            else the_collection.findOne({'_id':ObjectID(id)}, function(error,doc) { //C
+            else the_collection.findOne({'_id':ObjectID(id)}, function(error,doc) { 
                 if (error) callback(error);
                 else callback(null, doc);
             });
@@ -54,13 +41,12 @@ CollectionDriver.prototype.get = function(collectionName, id, callback) { //A
 };
 
 
-//save new object
 CollectionDriver.prototype.save = function(collectionName, obj, callback) {
-    this.getCollection(collectionName, function(error, the_collection) { //A
+    this.getCollection(collectionName, function(error, the_collection) { 
       if( error ) callback(error)
       else {
-        obj.created_at = new Date(); //B
-        the_collection.insert(obj, function() { //C
+        obj.created_at = new Date(); 
+        the_collection.insert(obj, function() { 
           callback(null, obj);
         });
       }
@@ -68,7 +54,6 @@ CollectionDriver.prototype.save = function(collectionName, obj, callback) {
 };
 
 
-//update a specific object
 CollectionDriver.prototype.updateUserRoom = function(collectionName, criterea,modif, callback) {
     this.getCollection(collectionName, function(error, the_collection) {
         if (error) callback(error)
@@ -76,9 +61,8 @@ CollectionDriver.prototype.updateUserRoom = function(collectionName, criterea,mo
      
 	        the_collection.update(
           {"name" : criterea},
-          //{"_id" : ObjectID(criterea)},
           {$push: { "rooms": modif } }
-          , function(error,doc) { //C
+          , function(error,doc) { 
             	if (error) callback(error)  
               callback(null, "updated");          	
             });          
@@ -86,7 +70,6 @@ CollectionDriver.prototype.updateUserRoom = function(collectionName, criterea,mo
     });
 }
 
-//update a specific object
 CollectionDriver.prototype.updateRoomUser = function(collectionName, criterea,modif, callback) {
     this.getCollection(collectionName, function(error, the_collection) {
         if (error) callback(error)
@@ -94,9 +77,8 @@ CollectionDriver.prototype.updateRoomUser = function(collectionName, criterea,mo
      
           the_collection.update(
           {"name" : criterea},
-          //{"_id" : ObjectID(criterea)},
           {$push: { "autorizedUsers": modif } }
-          , function(error,doc) { //C
+          , function(error,doc) { 
               if (error) callback(error)  
               callback(null, "room updated");            
             });          
@@ -104,18 +86,15 @@ CollectionDriver.prototype.updateRoomUser = function(collectionName, criterea,mo
     });
 }
 
-//update a specific object
 CollectionDriver.prototype.updateRoomConnectedUSer = function(collectionName, criterea, callback) {
     this.getCollection(collectionName, function(error, the_collection) {
         if (error) callback(error)
         else {
-          console.log("--------------------------------------------------21");
-     console.log("--------------------------------------------------"+criterea);
+        
           the_collection.update(
-          //{"name" : criterea},
-          {"_id" : ObjectID(criterea)},
+         {"_id" : ObjectID(criterea)},
           {$inc: { "connectedUser": 1 } }
-          , function(error,doc) { //C
+          , function(error,doc) { 
               if (error) callback(error)  ;
 
               callback(null, "room updated");            
@@ -125,17 +104,17 @@ CollectionDriver.prototype.updateRoomConnectedUSer = function(collectionName, cr
     });
 }
 
-//update a specific object
+
 CollectionDriver.prototype.updateleaveRoomConnectedUSer = function(collectionName, criterea, callback) {
     this.getCollection(collectionName, function(error, the_collection) {
         if (error) callback(error)
         else {
       
           the_collection.update(
-          //{"name" : criterea},
+          
           {"_id" : ObjectID(criterea)},
           {$inc: { "connectedUser": -1 } }
-          , function(error,doc) { //C
+          , function(error,doc) { 
               if (error) callback(error)  ;
 
               callback(null, "room updated");            
@@ -145,12 +124,12 @@ CollectionDriver.prototype.updateleaveRoomConnectedUSer = function(collectionNam
     });
 }
 
-//delete a specific object
+
 CollectionDriver.prototype.delete = function(collectionName, entityId, callback) {
-    this.getCollection(collectionName, function(error, the_collection) { //A
+    this.getCollection(collectionName, function(error, the_collection) { 
         if (error) callback(error)
         else {
-            the_collection.remove({'_id':ObjectID(entityId)}, function(error,doc) { //B
+            the_collection.remove({'_id':ObjectID(entityId)}, function(error,doc) { 
             	if (error) callback(error)
             	else callback(null, doc);
             });
@@ -161,12 +140,12 @@ CollectionDriver.prototype.delete = function(collectionName, entityId, callback)
 
 
   
- //get Room Resources
+
 CollectionDriver.prototype.getRoomResources = function(collectionName, roomId, callback) {
-    this.getCollection(collectionName, function(error, the_collection) { //A
+    this.getCollection(collectionName, function(error, the_collection) { 
         if (error) callback(error)
         else {
-            the_collection.find({'name':roomId}).toArray(function(error, results) { //B
+            the_collection.find({'name':roomId}).toArray(function(error, results) { 
           if( error ) callback(error);
           else callback(null, results);
         });
@@ -174,28 +153,13 @@ CollectionDriver.prototype.getRoomResources = function(collectionName, roomId, c
     });
 };
 
-//single item from a collection by its _id.
-CollectionDriver.prototype.getUserByNamePassword = function(collectionName, name,password, callback) { //A
+
+CollectionDriver.prototype.getUserByNamePassword = function(collectionName, name,password, callback) { 
     
-            this.getCollection(collectionName, function(error, the_collection) { //A
+            this.getCollection(collectionName, function(error, the_collection) { 
         if (error) callback(error)
         else {
-            the_collection.find({'name':name,'password':password}).toArray(function(error, results) { //B
-          if( error ) callback(error);
-          else callback(null, results);
-        });
-      }
-    });
-
-
-};
-
-CollectionDriver.prototype.getUserByName = function(collectionName, name, callback) { //A
-    
-            this.getCollection(collectionName, function(error, the_collection) { //A
-        if (error) callback(error)
-        else {
-            the_collection.find({'name':name}).toArray(function(error, results) { //B
+            the_collection.find({'name':name,'password':password}).toArray(function(error, results) { 
           if( error ) callback(error);
           else callback(null, results);
         });
@@ -204,32 +168,30 @@ CollectionDriver.prototype.getUserByName = function(collectionName, name, callba
 
 
 };
-//single item from a collection by its _id.
-CollectionDriver.prototype.getAllUsers = function(collectionName,callback) { //A
+
+CollectionDriver.prototype.getUserByName = function(collectionName, name, callback) {
     
-        this.getCollection(collectionName, function(error, the_collection) { //A
+            this.getCollection(collectionName, function(error, the_collection) { 
+        if (error) callback(error)
+        else {
+            the_collection.find({'name':name}).toArray(function(error, results) { 
+          if( error ) callback(error);
+          else callback(null, results);
+        });
+      }
+    });
+
+
+};
+
+CollectionDriver.prototype.getAllUsers = function(collectionName,callback) { 
+    
+        this.getCollection(collectionName, function(error, the_collection) { 
         if  (error) callback(error)
         else {
-              the_collection.find().toArray(function(error, results) { //B
+              the_collection.find().toArray(function(error, results) { 
               if( error ) callback(error);
               else {
-                /*
-                  var strJson = "{";
-                  var intCount = results.length;
-                  if(intCount > 0){
-                    
-                            for(var i=0; i<intCount;i++){
-                                    strJson += '{"user":"' + results[i].nom + '"}'
-                                    if (i<intCount-1){strJson+=',';}
-                            }
-                    
-                  }
-                  console.log(intCount);
-                  strJson+='}';
-                  console.log(strJson);
-
-                  callback("",JSON.stringify(strJson));
-                  */
                   callback("",results);
                }
           });
@@ -239,17 +201,14 @@ CollectionDriver.prototype.getAllUsers = function(collectionName,callback) { //A
 
 };
 
-
-
-//recherche des rooms associé à un autorizedUsers
-CollectionDriver.prototype.getUsersRooms = function(collectionName,userNom,callback) { //A
+CollectionDriver.prototype.getUsersRooms = function(collectionName,userNom,callback) { 
     
 
-        this.getCollection(collectionName, function(error, the_collection) {   //A
+        this.getCollection(collectionName, function(error, the_collection) {   
         if  (error) callback(error)
         else {
         
-              the_collection.find({'autorizedUsers':userNom }).toArray(function(error, results) { //B
+              the_collection.find({'autorizedUsers':userNom }).toArray(function(error, results) { 
                   
                 if( error ){   console.log(error); callback(error);}
               else  {
@@ -257,8 +216,6 @@ CollectionDriver.prototype.getUsersRooms = function(collectionName,userNom,callb
                 callback(null,results);
                
               }
-                 
-              //}
           });
         }
     });

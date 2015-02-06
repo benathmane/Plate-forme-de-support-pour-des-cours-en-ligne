@@ -16,11 +16,8 @@ function buildReceiveAreaName(easyrtcid) {
 
 
 function connectData() {
-	//var otherClientsDiv = document.getElementById('otherClients');
-
+	
     easyrtc.enableDataChannels(true);
-   // easyrtc.enableVideo(false);
-    //easyrtc.enableAudio(false);
     easyrtc.setRoomOccupantListener(convertListToButtons);
 
     easyrtc.setAcceptChecker(function(easyrtcid, responsefn) {
@@ -129,19 +126,13 @@ function convertListToButtons(roomName, occupants, isPrimary) {
         }
 
 
-        var noDCs = {}; // which users don't support data channels
+        var noDCs = {}; 
 
         var fileSender = null;
         function filesHandler(files) {
-            // if we haven't eastablished a connection to the other party yet, do so now,
-            // and on completion, send the files. Otherwise send the files now.
             var timer = null;
             if (easyrtc.getConnectStatus(easyrtcid) === easyrtc.NOT_CONNECTED && noDCs[easyrtcid] === undefined) {
-                //
-                // calls between firefrox and chrome ( version 30) have problems one way if you
-                // use data channels.
-                //
-
+       
             }
             else if (easyrtc.getConnectStatus(easyrtcid) === easyrtc.IS_CONNECTED || noDCs[easyrtcid]) {
                 if (!fileSender) {
@@ -194,9 +185,6 @@ function acceptRejectCB(otherGuy, fileNameList, wasAccepted) {
     jQuery(receiveBlock).empty();
     receiveBlock.style.display = "inline-block";
 
-    //
-    // list the files being offered
-    //
     receiveBlock.appendChild(document.createTextNode("Files offered"));
     receiveBlock.appendChild(document.createElement("br"));
     for (var i = 0; i < fileNameList.length; i++) {
@@ -204,10 +192,7 @@ function acceptRejectCB(otherGuy, fileNameList, wasAccepted) {
                 document.createTextNode("  " + fileNameList[i].name + "(" + fileNameList[i].size + " bytes)"));
         receiveBlock.appendChild(document.createElement("br"));
     }
-    //
-    // provide accept/reject buttons
-    //
-    var button = document.createElement("button");
+   var button = document.createElement("button");
     button.appendChild(document.createTextNode("Accept"));
     button.onclick = function() {
         jQuery(receiveBlock).empty();
