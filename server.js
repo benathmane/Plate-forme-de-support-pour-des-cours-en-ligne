@@ -142,15 +142,72 @@ mongoClient.open(function(err, mongoClient) { //C
       console.error("Error! Exiting... Must start MongoDB first");
       process.exit(1); //D
   }
-  var db = mongoClient.db("MyDatabase");  //E
-  collectionDriver = new CollectionDriver(db); //F
+    var db = mongoClient.db("MyDatabase");  //E
+
+    // ADD TEST DATA
+    collectionDriver = new CollectionDriver(db); //F
+    var obj1={ "name" : "AHMED",
+    "email": "ahmed@polytech.com",
+    "password": "AHMED",
+    "phone" : "+33 06",
+    "month" : 10,
+     "day" :3,
+    "year" : 1966};
+    collectionDriver.save("Users",obj1 , function(err,docs) {
+           if (err) console.log("error add test data");
+          else  console.log(" add test data"); 
+    });
+    var obj2={ "name" : "AYOUB",
+    "email": "ayoub@polytech.com",
+    "password": "AYOUB",
+    "phone" : "+33 06",
+    "month" : 10,
+     "day" :3,
+    "year" : 1966};
+    collectionDriver.save("Users",obj2 , function(err,docs) {
+           if (err) console.log("error add test data");
+          else  console.log(" add test data"); 
+    });
+    var obj3={ "name" : "MOLKA",
+    "email": "MOLKA@polytech.com",
+    "password": "MOLKA",
+    "phone" : "+33 06",
+    "month" : 10,
+     "day" :3,
+    "year" : 1966};
+    collectionDriver.save("Users",obj3 , function(err,docs) {
+           if (err) console.log("error add test data");
+          else  console.log(" add test data"); 
+    });
+    var obj3={ "name" : "HANA",
+    "email": "HANA@polytech.com",
+    "password": "HANA",
+    "phone" : "+33 06",
+    "month" : 10,
+     "day" :3,
+    "year" : 1966};
+    collectionDriver.save("Users",obj3 , function(err,docs) {
+           if (err) console.log("error add test data");
+          else  console.log(" add test data"); 
+    });
+    var room={
+    "name" : "WEB",
+    "connectedUser" : 0,
+    "autorizedUsers" : [ "AHMED", "AYOUB", "MOLKA", "HANA"]
+    };
+    collectionDriver.save("Rooms",room , function(err,docs) {
+           if (err) console.log("error add test data");
+          else  console.log(" add test data"); 
+    });
+
+
 });
 
 
 
 //ROUNTING 
 app.get('/', function(req, res) {
-   res.sendfile('index.html');
+ res.sendfile('index.html');
 });
 
 app.get('/register', function (req, res) {
