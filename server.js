@@ -146,49 +146,63 @@ mongoClient.open(function(err, mongoClient) {
 
     // ADD TEST DATA
     collectionDriver = new CollectionDriver(db); 
-    var obj1={ "name" : "AHMED",
+
+    var nbexistant=0;
+    collectionDriver.findAll("Users", function(error, objs) { 
+      nbexistant=objs.length;
+       
+    
+    
+    if(nbexistant==0){
+      console.log("DB empty ==> add bootstrap data");
+    var obj1={ "Identifiant":"AHMED", 
+    "name" : "AHMED",
     "email": "ahmed@polytech.com",
     "password": "AHMED",
     "phone" : "+33 06",
     "month" : 10,
      "day" :3,
-    "year" : 1966};
+    "year" : 1966,
+    "rooms" : [ "WEB"]};
     collectionDriver.save("Users",obj1 , function(err,docs) {
            if (err) console.log("error add test data");
-          else  console.log(" add test data"); 
+          
     });
-    var obj2={ "name" : "AYOUB",
+    var obj2={ "Identifiant":"AYOUB",  "name" : "AYOUB",
     "email": "ayoub@polytech.com",
     "password": "AYOUB",
     "phone" : "+33 06",
     "month" : 10,
      "day" :3,
-    "year" : 1966};
+    "year" : 1966,
+    "rooms" : [ "WEB"]};
     collectionDriver.save("Users",obj2 , function(err,docs) {
            if (err) console.log("error add test data");
-          else  console.log(" add test data"); 
+          
     });
-    var obj3={ "name" : "MOLKA",
+    var obj3={ "Identifiant":"MOLKA",  "name" : "MOLKA",
     "email": "MOLKA@polytech.com",
     "password": "MOLKA",
     "phone" : "+33 06",
     "month" : 10,
      "day" :3,
-    "year" : 1966};
+    "year" : 1966,
+    "rooms" : [ "WEB"]};
     collectionDriver.save("Users",obj3 , function(err,docs) {
            if (err) console.log("error add test data");
-          else  console.log(" add test data"); 
+          
     });
-    var obj3={ "name" : "HANA",
+    var obj3={ "Identifiant":"HANA",  "name" : "HANA",
     "email": "HANA@polytech.com",
     "password": "HANA",
     "phone" : "+33 06",
     "month" : 10,
      "day" :3,
-    "year" : 1966};
+    "year" : 1966,
+    "rooms" : [ "WEB"]};
     collectionDriver.save("Users",obj3 , function(err,docs) {
            if (err) console.log("error add test data");
-          else  console.log(" add test data"); 
+         
     });
     var room={
     "name" : "WEB",
@@ -197,7 +211,9 @@ mongoClient.open(function(err, mongoClient) {
     };
     collectionDriver.save("Rooms",room , function(err,docs) {
            if (err) console.log("error add test data");
-          else  console.log(" add test data"); 
+          
+    });
+    }
     });
 
 

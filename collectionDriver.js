@@ -60,7 +60,7 @@ CollectionDriver.prototype.updateUserRoom = function(collectionName, criterea,mo
         else {
      
 	        the_collection.update(
-          {"name" : criterea},
+          {"Identifiant" : criterea},
           {$push: { "rooms": modif } }
           , function(error,doc) { 
             	if (error) callback(error)  
@@ -159,7 +159,7 @@ CollectionDriver.prototype.getUserByNamePassword = function(collectionName, name
             this.getCollection(collectionName, function(error, the_collection) { 
         if (error) callback(error)
         else {
-            the_collection.find({'name':name,'password':password}).toArray(function(error, results) { 
+            the_collection.find({'Identifiant':name,'password':password}).toArray(function(error, results) { 
           if( error ) callback(error);
           else callback(null, results);
         });
@@ -174,7 +174,7 @@ CollectionDriver.prototype.getUserByName = function(collectionName, name, callba
             this.getCollection(collectionName, function(error, the_collection) { 
         if (error) callback(error)
         else {
-            the_collection.find({'name':name}).toArray(function(error, results) { 
+            the_collection.find({'Identifiant':name}).toArray(function(error, results) { 
           if( error ) callback(error);
           else callback(null, results);
         });

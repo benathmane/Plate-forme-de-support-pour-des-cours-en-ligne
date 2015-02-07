@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Web Project</title>
 <link rel="stylesheet" type="text/css" href="style.css" />
-<link rel="icon" type="image/png" href="img/favicon.png" />
+<link rel="icon" type="image/png" href="img/favicon1.png" />
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
@@ -19,7 +19,7 @@
 					success : function(data, textStatus, jqXHR) {
 						var tableContent = "";
 						for ( var i in data) {
-							tableContent += "<option value="+data[i].name+">"
+							tableContent += "<option value="+data[i].Identifiant+">"
 									+ data[i].name + "</option>";
 						}
 						$("#allowedUsers").html(tableContent);
