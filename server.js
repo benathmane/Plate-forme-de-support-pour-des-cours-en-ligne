@@ -19,8 +19,14 @@ var mongoClient = new MongoClient(new Server(mongoHost, mongoPort));
 app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.use(express.favicon());
+app.use(express.logger('dev'));
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.cookieParser('your secret here'));
+app.use(express.session());
 var htmlDir="/static";
-
+app.set('port', process.env.PORT || 8088);
 
 app.use(express.cookieParser());
 
@@ -33,6 +39,11 @@ app.use(session({
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000,
 }));
+// development only
+if ('development' == app.get('env')) {
+  app.use(express.errorHandler());
+}
+
 
 app.configure(function () {
     var hourMs = 1000 * 60 * 60;
@@ -123,7 +134,8 @@ function onNewNamespace(channel, sender) {
     });
 }
 
-
+// MongoDB connection configuration
+var db = process.env.MONGO_DATABASE || 'MyDatabase';
 //OPEN Connection to MongoDB
 mongoClient.open(function(err, mongoClient) { 
   if (!mongoClient) {
