@@ -1325,7 +1325,8 @@ var Easyrtc = function() {
             errorDiv = document.createElement("div");
             errorDiv.id = 'easyrtcErrorDialog';
             var title = document.createElement("div");
-            title.innerHTML = "Error messages";
+            //title.innerHTML = "Error messages";
+						title.innerHTML = "";
             title.className = "easyrtcErrorDialog_title";
             errorDiv.appendChild(title);
             errorBody = document.createElement("div");
@@ -1334,6 +1335,7 @@ var Easyrtc = function() {
             var clearButton = document.createElement("button");
             clearButton.appendChild(document.createTextNode("Okay"));
             clearButton.className = "easyrtcErrorDialog_okayButton";
+						clearButton.style.display = "none";
             clearButton.onclick = function() {
                 errorBody.innerHTML = ""; // remove all inner nodes
                 errorDiv.style.display = "none";
@@ -1951,7 +1953,7 @@ var Easyrtc = function() {
                                 (self.nativeVideoHeight !== self._desiredVideoProperties.height ||
                                         self.nativeVideoWidth !== self._desiredVideoProperties.width)) {
                             self.showError(self.errCodes.MEDIA_WARNING,
-                                    self.format(self.getConstantString("resolutionWarning"),
+                                    self.format(self.getConstantString(""),
                                     self._desiredVideoProperties.width, self._desiredVideoProperties.height,
                                     self.nativeVideoWidth, self.nativeVideoHeight));
                         }
@@ -5235,11 +5237,11 @@ var Easyrtc = function() {
 
 
 };
-
+ // "resolutionWarning": "Requested video size of {0}x{1} but got size of {2}x{3}",
 window.easyrtc = new Easyrtc();
 var easyrtc_constantStrings = {
   "unableToEnterRoom":"Unable to enter room {0} because {1}" ,
-  "resolutionWarning": "Requested video size of {0}x{1} but got size of {2}x{3}",
+  "resolutionWarning": "",
   "badUserName": "Illegal username {0}",
   "localMediaError": "Error getting local media stream: {0}",
   "miscSignalError": "Miscellaneous error from signalling server. It may be ignorable.",

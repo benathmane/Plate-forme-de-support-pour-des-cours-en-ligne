@@ -38,7 +38,15 @@
 										width:470px;
 										overflow: auto;
 							}
-
+							div#drag{
+										border:1px solid gray;
+										position:absolute;
+										margin-top:25px;
+										height:280px;
+										width:470px;
+										overflow: auto;
+										background-color: white;
+							}
 							div#righColumn {
 										position:fixed;
 										bottom: 0;
@@ -71,15 +79,6 @@
 										bottom:0px;
 										overflow: scroll;
 							}
-							div#drag{
-										border:1px solid gray;
-										position:absolute;
-										margin-top:25px;
-										height:280px;
-										width:470px;
-										overflow: auto;
-										background-color: white;
-							}
 							/* chat block */
 							.chat_messages .message {
 										background-color: #fff;
@@ -97,7 +96,7 @@
 										font-size: 10px;
 										margin-left: 10px;
 							}
-							#data, #datasend, #afficherSharingA, #drop{
+							#data, #datasend, #drop{
 										-moz-border-radius: 5px;
 										-ms-border-radius: 5px;
 										-o-border-radius: 5px;
@@ -112,12 +111,9 @@
 										margin-right: 10px;
 										width: 200px;
 							}
-							#datasend, #afficher,#, #drop{
+							#datasend, #afficher, #drop, #afficherSharingA, #deconnect{
 										cursor: pointer;
-										font-size: 16px;
-										font-weight: bold;
 										height: 35px;
-										padding: 5px;
 							}
 							#listofUsers{
 										border-left: 1px solid rgba(0, 0, 0, 0.4);
@@ -143,9 +139,8 @@
 						    #selfVideo {
 									height:100%;
 									width:100%;
-									
 									margin-left:-23px;
-									margin-top: 50px;
+									margin-top: -2px;
 						    }
 						    .callerVideo {
 									height:160px;
@@ -218,16 +213,26 @@
 											position:absolute;
 											margin-top: -300px;
 											height:25px;
+											z-index: 1;
 										}
 										.menu{
 											position:absolute;
 											margin-top: -337px;
 											margin-left: 70px;
+											margin-top: -360px;
 										}
 										#afficherSharingA{
+										margin-top: 25px;
 											margin-left: 280px;
 											width:120px;
 											height:25px;
+										}
+										#deconnect{
+											position:absolute;
+											width:120px;
+											margin-left: 180px;
+											height:25px;
+											z-index: 1;
 										}
 								#users{
 									color: white;
@@ -384,7 +389,7 @@
             </script>
         </article>
 			
-			<input type="button" id="deconnect" value="Leave Room"  class="btn"/>
+			<input type="button" id="deconnect" value="&#9668; Leave Room"  class="btn"/>
 
 				 <div id="drag">
 					<form id="upload" enctype="multipart/form-data">
@@ -398,7 +403,7 @@
 				</div>
 				
 				<div class="container" id="con3" style="height:300px; width:300px; margin-left:auto; margin-right:auto;">
-         	<video autoplay="autoplay"  id="selfVideo" style="height:800px; width:650px; " muted="muted" volume="0" ></video>
+         	<video autoplay="autoplay"  id="selfVideo" style="height:640px; width:550px; " muted="muted" volume="0" ></video>
          	 <!-- class="callerVideo" class="easyrtcMirror"-->
 				</div>
 					<input type="button" id="afficher" value="Localisation (+)" class="btn"/>
