@@ -27,7 +27,7 @@ function connectData(roomName) {
 
     easyrtc.setAcceptChecker(function(easyrtcid, responsefn) {
         responsefn(true);
-        document.getElementById("connectbutton_" + easyrtcid).style.visibility = "hidden";
+        //document.getElementById("connectbutton_" + easyrtcid).style.visibility = "hidden";
     });
 
     easyrtc.setDataChannelOpenListener(function(easyrtcid, usesPeer) {
@@ -72,13 +72,19 @@ function convertListToButtons(roomName, occupants, isPrimary) {
 	  console.log("roomName="  + roomName );
 
     console.log("callEverybodyElse count="  + easyrtc.getConnectionCount() );
-   var list = [];
+    var list = [];
     var connectCount = 0;
     for(var easyrtcid in occupants ) {
         list.push(easyrtcid);
+
+        //easyrtc.call(easyrtcid,null,null,null);
+
     }
-	console.log("list="  + list );
-     function establishConnection(position) {
+    console.log("occupant="+occupants);
+	console.log("occupant="+list);
+      
+
+       function establishConnection(position) {
         function callSuccess() {
             connectCount++;
             if( connectCount < maxCALLERS && position > 0) {
@@ -116,9 +122,16 @@ function convertListToButtons(roomName, occupants, isPrimary) {
 
         var dropArea = document.createElement("div");
         var connectButton = document.createElement("button");
-        connectButton.appendChild(document.createTextNode("Connect"));
+        connectButton.appendChild(document.createTextNode("Open Camera"));
         connectButton.className = "connectButton";
         connectButton.id = "connectbutton_" + easyrtcid;
+
+
+        easyrtc.setRoomOccupantListener(null); // so we're only called once.
+ 
+ 
+
+
         connectButton.onclick = function() {
             statusDiv.innerHTML = "Waiting for connection to be established";
             
@@ -138,7 +151,13 @@ function convertListToButtons(roomName, occupants, isPrimary) {
                     }
             );
         }
+/*
+        for(var easyrtcid in occupants ) {
+       
+        easyrtc.call(easyrtcid,null,null,null);
 
+        }
+*/
         dropArea.id = buildDragNDropName(easyrtcid);
         dropArea.className = "dragndrop notConnected";
         dropArea.innerHTML = "File drop area";
@@ -194,6 +213,23 @@ function convertListToButtons(roomName, occupants, isPrimary) {
         container.appendChild(connectButton);
         container.appendChild(dropArea);
         container.appendChild(statusDiv);
+
+    for(var easyrtcid in occupants ) {
+       // connectButton.click();
+       easyrtc.call(easyrtcid,
+                    function(caller, mediatype) {
+                        statusDiv.innerHTML = "Connection established";
+                        dropArea.className = "dragndrop connected";
+                      //  connectButton.style.visibility = "hidden";
+                    },
+                    function(errorCode, errorText) {
+                        dropArea.className = "dragndrop connected";
+                        statusDiv.innerHTML = "Connection failed";
+                       // connectButton.style.visibility = "hidden";
+                        noDCs[easyrtcid] = true;
+                    },null
+            );
+       }; 
         return container;
     }
 
@@ -289,7 +325,7 @@ function blobAcceptor(otherGuy, blob, filename) {
 }
 
 function loginSuccess(easyrtcid) {
-    selfEasyrtcid = easyrtcid;
+  
   document.getElementById("iam").innerHTML = "I am " + easyrtc.cleanId(easyrtcid);
 	
 	
