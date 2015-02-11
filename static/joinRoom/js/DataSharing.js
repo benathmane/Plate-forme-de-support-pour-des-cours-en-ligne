@@ -4,27 +4,27 @@ var peers = {};
 var connectCount = 0;
 var maxCALLERS = 3;
 
-
 function connectData(roomName) {
 	  easyrtc.enableDataChannels(true);
 	easyrtc.setVideoDims(800,600);
   easyrtc.easyApp("easyrtc.webProject", "selfVideo", ["callerVideo1","callerVideo2","callerVideo3"],  loginSuccess,loginFailure);
 
     easyrtc.joinRoom(roomName, null, loginSuccess,loginFailure);
-    
+     easyrtc.setRoomOccupantListener(convertListToButtons);
 
+    
     easyrtc.setDisconnectListener( function() {
         easyrtc.showError("LOST-CONNECTION", "Lost connection to signaling server");
     });
    easyrtc.dontAddCloseButtons(true);
 
     easyrtc.setOnCall( function(easyrtcid, slot) {
+       convertListToButtons(roomName,easyrtc.getRoomOccupantsAsArray(roomName),null);
         console.log("getConnection count="  + easyrtc.getConnectionCount() );
     });
 	
 	
-    easyrtc.setRoomOccupantListener(convertListToButtons);
-
+   
     easyrtc.setAcceptChecker(function(easyrtcid, responsefn) {
         responsefn(true);
         //document.getElementById("connectbutton_" + easyrtcid).style.visibility = "hidden";
@@ -40,8 +40,8 @@ function connectData(roomName) {
     });
 	
     easyrtc.setDataChannelCloseListener(function(easyrtcid) {
-        jQuery(buildDragNDropName(easyrtcid)).addClass("notConnected");
-        jQuery(buildDragNDropName(easyrtcid)).removeClass("connected");
+        //jQuery(buildDragNDropName(easyrtcid)).addClass("notConnected");
+       // jQuery(buildDragNDropName(easyrtcid)).removeClass("connected");
     });
 	
 
@@ -69,73 +69,63 @@ function deconect(roomName){
 
 function convertListToButtons(roomName, occupants, isPrimary) {
 	
-	  console.log("roomName="  + roomName );
-
-    console.log("callEverybodyElse count="  + easyrtc.getConnectionCount() );
-    var list = [];
-    var connectCount = 0;
-    for(var easyrtcid in occupants ) {
-        list.push(easyrtcid);
-
-        //easyrtc.call(easyrtcid,null,null,null);
-
-    }
-    console.log("occupant="+occupants);
-	console.log("occupant="+list);
-      
-
-       function establishConnection(position) {
-        function callSuccess() {
-            connectCount++;
-            if( connectCount < maxCALLERS && position > 0) {
-                establishConnection(position-1);
-            }
-        }
-        function callFailure(errorCode, errorText) {
-            easyrtc.showError(errorCode, errorText);
-            if( connectCount < maxCALLERS && position > 0) {
-                establishConnection(position-1);
-            }
-        }
-		console.log("establishConnection = "+position+"=="  +list[position] );
-        easyrtc.call(list[position], callSuccess, callFailure);
-
-    }
-    if( list.length > 0) {
-        establishConnection(list.length-1);
-		console.log("establishConnection 1= "  +list[list.length-1] );
-    }
+	console.log("roomName="  + roomName );
+    console.log("selfEasyrtcid="  + selfEasyrtcid );
+    console.log("+++++++++++++occupant={"+easyrtc.getRoomOccupantsAsArray(roomName) +"}");
 	
 	
     var peerZone = document.getElementById('peerZone');
+   
     for (var oldPeer in  peers) {
         if (!occupants[oldPeer]) {
             removeIfPresent(peerZone, buildPeerBlockName(oldPeer));
             delete peers[oldPeer];
         }
     }
+    
+    var i=0;
+   
+    for (var easyrtcid in occupants) {
+        
+
+        var name=occupants[easyrtcid];
+        var tmp;
+        if (typeof name === "object") tmp=name.easyrtcid;
+        else tmp=name;
+        if (!peers[tmp]) {
+            if(tmp!= selfEasyrtcid){
+            var peerBlock = document.createElement("div");
+            peerBlock.id = buildPeerBlockName(tmp);
+            peerBlock.className = "peerblock";
+            peerBlock.appendChild(document.createTextNode(" For peer " + tmp));
+            peerBlock.appendChild(document.createElement("br"));
+            peerBlock.appendChild(buildDropDiv(tmp));
+            peerBlock.appendChild(buildReceiveDiv(tmp));
+            peerZone.appendChild(peerBlock);
+            peers[tmp] = true;
+            }
+        }
+    }
+	
+}
 
 
-    function buildDropDiv(easyrtcid) {
+
+function buildDropDiv(easyrtcid) {
         var statusDiv = document.createElement("div");
         statusDiv.className = "dragndropStatus";
 
         var dropArea = document.createElement("div");
         var connectButton = document.createElement("button");
-        connectButton.appendChild(document.createTextNode("Open Camera"));
+        connectButton.appendChild(document.createTextNode("Open Camera & Share"));
         connectButton.className = "connectButton";
         connectButton.id = "connectbutton_" + easyrtcid;
-
-
         easyrtc.setRoomOccupantListener(null); // so we're only called once.
- 
- 
-
 
         connectButton.onclick = function() {
             statusDiv.innerHTML = "Waiting for connection to be established";
             
-			easyrtc.call(easyrtcid,
+            easyrtc.call(easyrtcid,
                     function(caller, mediatype) {
                         statusDiv.innerHTML = "Connection established";
                         dropArea.className = "dragndrop connected";
@@ -151,13 +141,7 @@ function convertListToButtons(roomName, occupants, isPrimary) {
                     }
             );
         }
-/*
-        for(var easyrtcid in occupants ) {
-       
-        easyrtc.call(easyrtcid,null,null,null);
 
-        }
-*/
         dropArea.id = buildDragNDropName(easyrtcid);
         dropArea.className = "dragndrop notConnected";
         dropArea.innerHTML = "File drop area";
@@ -189,7 +173,6 @@ function convertListToButtons(roomName, occupants, isPrimary) {
             return true;
         }
 
-
         var noDCs = {}; 
 
         var fileSender = null;
@@ -213,53 +196,17 @@ function convertListToButtons(roomName, occupants, isPrimary) {
         container.appendChild(connectButton);
         container.appendChild(dropArea);
         container.appendChild(statusDiv);
-
-    for(var easyrtcid in occupants ) {
-       // connectButton.click();
-       easyrtc.call(easyrtcid,
-                    function(caller, mediatype) {
-                        statusDiv.innerHTML = "Connection established";
-                        dropArea.className = "dragndrop connected";
-                      //  connectButton.style.visibility = "hidden";
-                    },
-                    function(errorCode, errorText) {
-                        dropArea.className = "dragndrop connected";
-                        statusDiv.innerHTML = "Connection failed";
-                       // connectButton.style.visibility = "hidden";
-                        noDCs[easyrtcid] = true;
-                    },null
-            );
-       }; 
         return container;
-    }
+}
 
 
-    function buildReceiveDiv(i) {
+function buildReceiveDiv(i) {
         var div = document.createElement("div");
         div.id = buildReceiveAreaName(i);
         div.className = "receiveBlock";
         div.style.display = "none";
         return div;
     }
-
-
-    for (var easyrtcid in occupants) {
-        if (!peers[easyrtcid]) {
-            var peerBlock = document.createElement("div");
-            peerBlock.id = buildPeerBlockName(easyrtcid);
-            peerBlock.className = "peerblock";
-            peerBlock.appendChild(document.createTextNode(" For peer " + easyrtcid));
-            peerBlock.appendChild(document.createElement("br"));
-            peerBlock.appendChild(buildDropDiv(easyrtcid));
-            peerBlock.appendChild(buildReceiveDiv(easyrtcid));
-            peerZone.appendChild(peerBlock);
-            peers[easyrtcid] = true;
-        }
-    }
-	
-}
-
-
 
 function acceptRejectCB(otherGuy, fileNameList, wasAccepted) {
 
@@ -327,7 +274,7 @@ function blobAcceptor(otherGuy, blob, filename) {
 function loginSuccess(easyrtcid) {
   
   document.getElementById("iam").innerHTML = "I am " + easyrtc.cleanId(easyrtcid);
-	
+	selfEasyrtcid=easyrtcid;
 	
 	$.ajax({
 		url: "/Connections",
